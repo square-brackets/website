@@ -1,0 +1,11 @@
+:root {
+  --color-base-black: #202020;
+  --color-base-white: #FFFFFF;
+
+  --color-background-dark: var(--color-base-black);
+  --color-text-light: var(--color-base-white);
+}
+
+@import 'styles/fonts';
+@import 'styles/common';
+@import 'styles/sections/main-hero-section';
