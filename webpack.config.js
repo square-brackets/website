@@ -22,7 +22,7 @@ module.exports = {
       test: /\.hbs$/,
       loader: 'handlebars-loader'
     }, {
-      test: /\.(woff(2)?|ttf|eot|svg)$/,
+      test: /\.(woff(2)?|ttf|eot|svg|otf)$/,
       loader: 'file-loader'
     }]
   },

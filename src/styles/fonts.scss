@@ -1,4 +1,13 @@
 @font-face {
   font-family: Jost;
-  src: url('fonts/Jost.woff2') format('woff2-variations');
+  font-weight: 400;
+  font-style: normal;
+  src: url("fonts/Jost-400-Book.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Jost;
+  font-weight: 700;
+  font-style: normal;
+  src: url("fonts/Jost-700-Bold.otf") format("opentype");
 }

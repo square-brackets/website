@@ -3,13 +3,11 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 100vh;
 
   &__logo {
     font-size: 72px;
     position: relative;
-    font-variation-settings: 'wght' 600;
-    font-weight: normal;
 
     &::before,
     &::after {
