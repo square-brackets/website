@@ -8,6 +8,10 @@
   &__logo {
     display: flex;
     align-items: center;
+
+    @include media(mobile down) {
+      transform: scale(0.5);
+    }
   }
 
   &__bracket {

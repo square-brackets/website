@@ -5,9 +5,17 @@
   color: var(--color-text-dark);
   justify-content: space-between;
 
+  @include media(mobile down) {
+    flex-direction: column;
+  }
+
   &__links {
     display: flex;
     align-items: center;
+
+    @include media(mobile down) {
+      margin-top: 16px;
+    }
   }
 
   &__link {
