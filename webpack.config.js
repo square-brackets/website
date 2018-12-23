@@ -41,7 +41,6 @@ module.exports = {
       filename: "[name].css",
       chunkFilename: "[id].css"
     }),
-    new HtmlWebpackInlineStylePlugin(),
     new CopyWebpackPlugin([
       { from: 'src/assets' }
     ])
