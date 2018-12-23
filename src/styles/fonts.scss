@@ -2,6 +2,7 @@
   font-family: Jost;
   font-weight: 400;
   font-style: normal;
+  font-display: fallback;
   src: url("fonts/Jost-400-Book.otf") format("opentype");
 }
 
@@ -9,5 +10,6 @@
   font-family: Jost;
   font-weight: 700;
   font-style: normal;
+  font-display: fallback;
   src: url("fonts/Jost-700-Bold.otf") format("opentype");
 }
