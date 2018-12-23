@@ -1,0 +1,27 @@
+.main-hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+  }
+
+  &__bracket {
+    display: flex;
+    transform: translateX(4px);
+
+    &--reverse {
+      transform: scaleX(-1) translateX(4px);
+    }
+  }
+
+  &__title {
+    font-size: 72px;
+    position: relative;
+    margin: 0;
+  }
+}

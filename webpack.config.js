@@ -20,7 +20,11 @@ module.exports = {
       ]
     }, {
       test: /\.hbs$/,
-      loader: 'handlebars-loader'
+      loader: 'handlebars-loader',
+      query: {
+        extensions: ['.hbs'],
+        rootRelative: path.join(__dirname, 'src', 'templates/')
+      }
     }, {
       test: /\.(woff(2)?|ttf|eot|svg|otf)$/,
       loader: 'file-loader'
