@@ -3,13 +3,17 @@
   <head>
     <title>Brackets Web</title>
     <meta charset="utf-8"/>
+    <meta name="description" content="Personal website for Stjepan Petrusa">
     <meta name="theme-color" content="#202020"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.png"/>
     <link rel="manifest" href="/manifest.json"/>
+    <link rel="stylesheet" href="<%= mainCSS %>">
+
+    <script defer src="<%= mainJS %>" charset="utf-8"></script>
   </head>
   <body>
-    {{> components/main-hero-section}}
-    {{> components/header}}
+    <%- include('/components/main-hero-section.ejs'); %>
+    <%- include('/components/header.ejs'); %>
   </body>
 </html>
