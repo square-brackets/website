@@ -1,31 +1,39 @@
 .main-hero-section {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-direction: column;
   flex: 1;
-
-  &__logo {
-    display: flex;
-    align-items: center;
-
-    @include media(mobile down) {
-      transform: scale(0.5);
-    }
-  }
-
-  &__bracket {
-    display: flex;
-    transform: translateX(4px);
-
-    &--reverse {
-      transform: scaleX(-1) translateX(4px);
-    }
-  }
+  padding: 12.5vw 5.20833vw 10.677083vw;
 
   &__title {
-    font-size: 72px;
-    position: relative;
+    font-size: 5vw;
     margin: 0;
+    font-weight: 500;
+  }
+
+  &__description {
+    font-size: 2vw;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 1vw;
+    opacity: 0.5;
+  }
+
+  &__game-trigger {
+    -webkit-appearance: none;
+    width: 100px;
+    height: 86.6px;
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  &__game {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    // opacity: 0.02;
   }
 }
