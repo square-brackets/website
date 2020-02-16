@@ -12,26 +12,57 @@ export default class Game {
 
     this.trianglesInRow = this.numberOfColumns * 2;
     this.trianglesInColumn = this.numberOfRows;
+  }
 
-    this.drawGrid();
+  start() {
+    this.step = 0;
+    this.animations = [];
+
+    // this.drawGrid();
     this.generateTriangles();
-
     this.animateTriangles();
 
-    // this.context.fillStyle = 'blue';
-    // this.triangles.forEach((triangle) => triangle.draw(this.context));
+    this.loop();
+  }
+
+  stop() {
+    this.isStopped = true;
+  }
+
+  loop() {
+    if (this.isStopped) {
+      return;
+    }
+
+    const time = Date.now();
+    this.step++;
+
+    this.animations.forEach(({drawFunction, startTime, duration}) => {
+      const percentage = (time - startTime) / duration;
+      drawFunction(percentage);
+    });
+
+    requestAnimationFrame(() => this.loop());
+  }
+
+  // TODO: Add delay
+  animate(drawFunction, duration) {
+    this.animations.push({
+      startStep: this.step,
+      startTime: Date.now(),
+      drawFunction,
+      duration
+    });
   }
 
   drawGrid() {
-    this.context.fillStyle = 'green';
-    this.context.fillRect(0, 0, 150, 100);
-    this.context.strokeStyle = 'white';
-
     const {height, width} = this.canvas;
     const numberOfRows = Math.floor(height / TRIANGLE_HEIGHT);
     const clippedHeight = numberOfRows * TRIANGLE_HEIGHT;
 
+    this.context.strokeStyle = 'white';
     this.context.beginPath();
+
     // Horizontal lines
     for (var i = 0; i < numberOfRows; i++) {
       this.context.moveTo(0, i * TRIANGLE_HEIGHT);
@@ -79,27 +110,45 @@ export default class Game {
   }
 
   async animateTriangles() {
-    const trianglesToShow = [this.triangles[0]];
     const drawnTriangles = [];
-    while (trianglesToShow.length) {
-      const triangleToShow = trianglesToShow.shift();
-      this.animateTriangle(triangleToShow);
-      drawnTriangles.push(triangleToShow);
-      const rightTriangle = triangleToShow.neighborhood[NEIGHBORHOOD_POSITION.RIGHT];
-      const leftTriangle = triangleToShow.neighborhood[NEIGHBORHOOD_POSITION.LEFT];
-      const bottomTriangle = triangleToShow.neighborhood[NEIGHBORHOOD_POSITION.BOTTOM];
-      if (rightTriangle && !drawnTriangles.includes(rightTriangle) && !trianglesToShow.includes(rightTriangle)) {
-        trianglesToShow.push(rightTriangle);
+    const triangleGroups = [[this.triangles[122]]]; // Group of traingles scheduled to be drawn
+    let resolvedTriangles = [this.triangles[122]]; // Triangles that are drawn or scheduled to be drawn
+    while (triangleGroups.length) {
+      const group = triangleGroups.shift();
+      const nextGroup = [];
+
+      group.forEach((triangle) => {
+        this.animateTriangle(triangle);
+        drawnTriangles.push(triangle);
+
+        const rightTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.RIGHT];
+        const leftTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.LEFT];
+        const bottomTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.BOTTOM];
+        const topTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.TOP];
+
+        if (rightTriangle && !resolvedTriangles.includes(rightTriangle) && !nextGroup.includes(rightTriangle)) {
+          nextGroup.push(rightTriangle);
+        }
+
+        if (leftTriangle && !resolvedTriangles.includes(leftTriangle) && !nextGroup.includes(leftTriangle)) {
+          nextGroup.push(leftTriangle);
+        }
+
+        if (bottomTriangle && !resolvedTriangles.includes(bottomTriangle) && !nextGroup.includes(bottomTriangle)) {
+          nextGroup.push(bottomTriangle);
+        }
+
+        if (topTriangle && !resolvedTriangles.includes(topTriangle) && !nextGroup.includes(topTriangle)) {
+          nextGroup.push(topTriangle);
+        }
+      });
+
+      if (nextGroup.length) {
+        triangleGroups.push(nextGroup);
+        resolvedTriangles = resolvedTriangles.concat(nextGroup);
       }
 
-      if (leftTriangle && !drawnTriangles.includes(leftTriangle) && !trianglesToShow.includes(leftTriangle)) {
-        trianglesToShow.push(leftTriangle);
-      }
-
-      if (bottomTriangle && !drawnTriangles.includes(bottomTriangle) && !trianglesToShow.includes(bottomTriangle)) {
-        trianglesToShow.push(bottomTriangle);
-      }
-
+       // TODO: Add delay yo animation and replace async with delayed animation;
       await new Promise((resolve) => {
         setTimeout(resolve, 50);
       });
@@ -107,7 +156,10 @@ export default class Game {
   }
 
   animateTriangle(triangle) {
-    this.context.fillStyle = 'blue';
-    triangle.draw(this.context);
+    this.animate((percentage) => {
+      // Linear opacity change
+      this.context.fillStyle = `rgba(255, 255, 255, ${percentage})`;
+      triangle.draw(this.context);
+    }, 500);
   }
 }

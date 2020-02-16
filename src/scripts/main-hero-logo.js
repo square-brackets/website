@@ -24,6 +24,7 @@ function startGame() {
   // On resize update canvas size
 
   const game = new Game(canvas);
+  game.start();
   window.game = game;
   isGameRunning = true;
 }
