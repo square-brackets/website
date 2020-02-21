@@ -12,14 +12,7 @@ function startGame() {
     return;
   }
 
-  const gameWrapper = document.querySelector('.js-game-wrapper');
-  const canvas = gameWrapper.querySelector('#game-canvas');
-
-  const gameWrapperSize = gameWrapper.getBoundingClientRect();
-
-  // update canvas size
-  canvas.width = gameWrapperSize.width;
-  canvas.height = gameWrapperSize.height;
+  const canvas = document.querySelector('#game-canvas');
 
   // On resize update canvas size
 
