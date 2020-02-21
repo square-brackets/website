@@ -1,4 +1,5 @@
 import Triangle, {ORIENTATIONS, NEIGHBORHOOD_POSITION, TRIANGLE_SIZE, TRIANGLE_HEIGHT} from './triangle';
+import noise from './noise';
 
 export default class Game {
   constructor(canvas) {
@@ -83,10 +84,17 @@ export default class Game {
   }
 
   generateTriangles() {
+    const offset = Math.random();
     for (var i = 0; i < this.trianglesInColumn; i++) {
       for (var j = 0; j < this.trianglesInRow; j++) {
         const orientation = (i + j) % 2 ? ORIENTATIONS.UP : ORIENTATIONS.DOWN;
-        const triangle = new Triangle({orientation, row: i, column: j});
+        const triangle = new Triangle({
+          orientation,
+          row: i,
+          column: j,
+          terrainGradient: (noise(i * 0.04 + offset, j * 0.04 + offset) + 1) / 2
+        });
+
         this.triangles.push(triangle);
 
         if (j !== 0) { // Skip first column
@@ -110,6 +118,7 @@ export default class Game {
     const drawnTriangles = [];
     const triangleGroups = [[this.triangles[122]]]; // Group of traingles scheduled to be drawn
     let resolvedTriangles = [this.triangles[122]]; // Triangles that are drawn or scheduled to be drawn
+
     while (triangleGroups.length) {
       const group = triangleGroups.shift();
       const nextGroup = [];
@@ -118,26 +127,25 @@ export default class Game {
         this.animateTriangle(triangle);
         drawnTriangles.push(triangle);
 
-        const rightTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.RIGHT];
-        const leftTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.LEFT];
-        const bottomTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.BOTTOM];
-        const topTriangle = triangle.neighborhood[NEIGHBORHOOD_POSITION.TOP];
+        const rightTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.RIGHT];
+        const leftTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.LEFT];
+        const bottomTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.BOTTOM];
+        const topTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.TOP];
 
-        if (rightTriangle && !resolvedTriangles.includes(rightTriangle) && !nextGroup.includes(rightTriangle)) {
-          nextGroup.push(rightTriangle);
-        }
+        [
+          NEIGHBORHOOD_POSITION.RIGHT, NEIGHBORHOOD_POSITION.LEFT,
+          NEIGHBORHOOD_POSITION.BOTTOM, NEIGHBORHOOD_POSITION.TOP
+        ].forEach((position) => {
+          const neighbourTriangle = triangle.neighbourhood[position];
 
-        if (leftTriangle && !resolvedTriangles.includes(leftTriangle) && !nextGroup.includes(leftTriangle)) {
-          nextGroup.push(leftTriangle);
-        }
-
-        if (bottomTriangle && !resolvedTriangles.includes(bottomTriangle) && !nextGroup.includes(bottomTriangle)) {
-          nextGroup.push(bottomTriangle);
-        }
-
-        if (topTriangle && !resolvedTriangles.includes(topTriangle) && !nextGroup.includes(topTriangle)) {
-          nextGroup.push(topTriangle);
-        }
+          if (
+            neighbourTriangle &&
+            !resolvedTriangles.includes(neighbourTriangle) &&
+            !nextGroup.includes(neighbourTriangle)
+          ) {
+            nextGroup.push(neighbourTriangle);
+          }
+        });
       });
 
       if (nextGroup.length) {
@@ -154,9 +162,7 @@ export default class Game {
 
   animateTriangle(triangle) {
     this.animate((percentage) => {
-      // Linear opacity change
-      this.context.fillStyle = `rgba(255, 255, 255, ${percentage})`;
-      triangle.draw(this.context);
+      triangle.draw(this.context, percentage);
     }, 500);
   }
 }
