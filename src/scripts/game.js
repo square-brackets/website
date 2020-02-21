@@ -15,7 +15,6 @@ export default class Game {
   }
 
   start() {
-    this.step = 0;
     this.animations = [];
 
     // this.drawGrid();
@@ -35,7 +34,6 @@ export default class Game {
     }
 
     const time = Date.now();
-    this.step++;
 
     this.animations.forEach(({drawFunction, startTime, duration}) => {
       const percentage = (time - startTime) / duration;
@@ -48,7 +46,6 @@ export default class Game {
   // TODO: Add delay
   animate(drawFunction, duration) {
     this.animations.push({
-      startStep: this.step,
       startTime: Date.now(),
       drawFunction,
       duration
