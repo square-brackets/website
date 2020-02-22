@@ -121,8 +121,13 @@ export default class Game {
 
   async animateTriangles() {
     const drawnTriangles = [];
-    const triangleGroups = [[this.triangles[122]]]; // Group of traingles scheduled to be drawn
-    let resolvedTriangles = [this.triangles[122]]; // Triangles that are drawn or scheduled to be drawn
+
+    const triggerTriangle = this.triangles.find((triangle) => {
+      return triangle.x === this.originalOffsetX && triangle.y === this.originalOffsetY
+    });
+
+    const triangleGroups = [[triggerTriangle]]; // Group of traingles scheduled to be drawn
+    let resolvedTriangles = [triggerTriangle]; // Triangles that are drawn or scheduled to be drawn
 
     while (triangleGroups.length) {
       const group = triangleGroups.shift();
