@@ -153,7 +153,7 @@ export default class Game {
         resolvedTriangles = resolvedTriangles.concat(nextGroup);
       }
 
-       // TODO: Add delay yo animation and replace async with delayed animation;
+       // TODO: Add delay to animation and replace async with delayed animation;
       await new Promise((resolve) => {
         setTimeout(resolve, 50);
       });
