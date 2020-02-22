@@ -54,20 +54,6 @@ export default class Triangle {
 
     context.beginPath();
 
-    // Without rounded corners
-    // if (this.orientation === ORIENTATIONS.UP) {
-    //   context.moveTo(x + dx, y - PADDING);
-    //   context.lineTo(x + TRIANGLE_SIZE - dx, y - PADDING);
-    //   context.lineTo(x + TRIANGLE_SIZE / 2, y - TRIANGLE_HEIGHT + dy);
-    //   context.closePath();
-    // } else {
-    //   context.moveTo(x + dx, y + PADDING);
-    //   context.lineTo(x + TRIANGLE_SIZE - dx, y + PADDING);
-    //   context.lineTo(x + TRIANGLE_SIZE / 2, y + TRIANGLE_HEIGHT - dy);
-    //   context.closePath();
-    // }
-
-    // With rounded corners
     if (this.orientation === ORIENTATIONS.UP) {
       context.arc(x + dx + Math.sqrt(3) * CORNER_RADIUS, y - PADDING - CORNER_RADIUS, CORNER_RADIUS, 7 * Math.PI / 6, Math.PI / 2, true);
       context.arc(x + TRIANGLE_SIZE - dx - Math.sqrt(3) * CORNER_RADIUS, y - PADDING - CORNER_RADIUS, CORNER_RADIUS, Math.PI / 2, -1 * Math.PI / 6, true);
