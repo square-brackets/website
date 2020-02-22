@@ -1,11 +1,16 @@
 .main-hero-section {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
+  align-items: center;
   flex: 1;
   padding: 12.5vw 5.20833vw 10.677083vw;
   position: relative;
+
+  &__inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex: 1 1;
+  }
 
   &__title {
     font-size: 5vw;
@@ -22,14 +27,6 @@
     opacity: 0.5;
   }
 
-  &__game-trigger {
-    -webkit-appearance: none;
-    width: 100px;
-    height: 86.6px;
-    cursor: pointer;
-    background-color: transparent;
-  }
-
   &__game {
     position: absolute;
     top: 0;
@@ -37,5 +34,25 @@
     width: 100%;
     height: 100%;
     z-index: -1;
+  }
+
+  &__game-trigger-wrapper {
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    width: 100px;
+    height: 86px;
+    margin: 0 2vw;
+  }
+
+  &__game-trigger {
+    -webkit-appearance: none;
+    width: 71px;
+    cursor: pointer;
+    height: 71px;
+    padding: 0;
+    border: 0;
+    transform-origin: bottom left;
+    transform: scaleY(1.732) rotateZ(45deg);
   }
 }
