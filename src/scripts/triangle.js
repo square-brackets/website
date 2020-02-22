@@ -1,6 +1,6 @@
-export const TRIANGLE_SIZE = 50;
+export const TRIANGLE_SIZE = 100;
 export const TRIANGLE_HEIGHT = TRIANGLE_SIZE * 0.866 // Equilateral triangles have height equal to 86.6% (sqrt(3)/2);
-const CORNER_RADIUS = 3;
+const CORNER_RADIUS = 2;
 const PADDING = 3;
 
 export const NEIGHBORHOOD_POSITION = {
