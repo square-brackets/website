@@ -24,9 +24,9 @@ export const TERRAINS = {
 }
 
 export const TERRAIN_TO_COLOR = {
-  [TERRAINS.WATER]: (opacity) => `rgba(0, 0, 255, ${opacity})`,
-  [TERRAINS.GRASS]: (opacity) => `rgba(0, 255, 0, ${opacity})`,
-  [TERRAINS.SAND]: (opacity) => `rgba(244, 164, 96, ${opacity})`,
+  [TERRAINS.WATER]: (opacity) => `rgba(0, 99, 178, ${opacity})`,
+  [TERRAINS.GRASS]: (opacity) => `rgba(136, 180, 100, ${opacity})`,
+  [TERRAINS.SAND]: (opacity) => `rgba(239, 221, 165, ${opacity})`,
   [TERRAINS.FOREST]: (opacity) => `rgba(0, 100, 0, ${opacity})`,
   [TERRAINS.MOUNTAIN]: (opacity) => `rgba(255, 255, 255, ${opacity})`
 }
