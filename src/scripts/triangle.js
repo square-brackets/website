@@ -32,10 +32,10 @@ export const TERRAIN_TO_COLOR = {
 }
 
 export default class Triangle {
-  constructor({orientation, row, column, terrainGradient}, neighbourhood = []) {
+  constructor({orientation, x, y, terrainGradient}, neighbourhood = []) {
     this.orientation = orientation;
-    this.row = row;
-    this.column = column;
+    this.x = x;
+    this.y = y;
     this.neighbourhood = {};
     this.terrainGradient = terrainGradient;
   }
@@ -45,8 +45,8 @@ export default class Triangle {
   }
 
   draw(context, percentage) {
-    const x = this.column * TRIANGLE_SIZE / 2;
-    const y = (this.row + (this.orientation === ORIENTATIONS.UP ? 1 : 0)) * TRIANGLE_HEIGHT;
+    const x = this.x;
+    const y = this.y + (this.orientation === ORIENTATIONS.UP ? 1 : 0) * TRIANGLE_HEIGHT;
     const dx = 3 / Math.sqrt(3) * PADDING;
     const dy = 2 * PADDING;
 

@@ -2,7 +2,7 @@ import Triangle, {ORIENTATIONS, NEIGHBORHOOD_POSITION, TRIANGLE_SIZE, TRIANGLE_H
 import noise from './noise';
 
 export default class Game {
-  constructor(canvas) {
+  constructor(canvas, options = {}) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
 
@@ -11,8 +11,13 @@ export default class Game {
     this.numberOfRows = Math.ceil(this.canvas.height / TRIANGLE_HEIGHT);
     this.numberOfColumns = Math.ceil(this.canvas.width / TRIANGLE_SIZE);
 
-    this.trianglesInRow = this.numberOfColumns * 2;
-    this.trianglesInColumn = this.numberOfRows;
+    this.trianglesInRow = this.numberOfColumns * 2 + 2;
+    this.trianglesInColumn = this.numberOfRows + 1;
+
+    this.originalOffsetX = options.offsetX;
+    this.originalOffsetY = options.offsetY;
+    this.offsetX = options.offsetX % (TRIANGLE_SIZE / 2);
+    this.offsetY = options.offsetY % TRIANGLE_HEIGHT;
   }
 
   start() {
@@ -90,8 +95,8 @@ export default class Game {
         const orientation = (i + j) % 2 ? ORIENTATIONS.UP : ORIENTATIONS.DOWN;
         const triangle = new Triangle({
           orientation,
-          row: i,
-          column: j,
+          x: (j - 2) * TRIANGLE_SIZE / 2 + this.offsetX,
+          y: (i - 1) * TRIANGLE_HEIGHT + this.offsetY,
           terrainGradient: (noise(i * 0.04 + offset, j * 0.04 + offset) + 1) / 2
         });
 
