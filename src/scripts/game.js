@@ -58,6 +58,18 @@ export default class Game {
     });
   }
 
+  showTrigger() {
+    // TODO: mousemove
+
+    const triggerTriangle = new Triangle({
+      orientation: ORIENTATIONS.UP,
+      x: this.originalOffsetX,
+      y: this.originalOffsetY
+    });
+
+    triggerTriangle.draw(this.context);
+  }
+
   drawGrid() {
     const {height, width} = this.canvas;
     const numberOfRows = Math.floor(height / TRIANGLE_HEIGHT);
