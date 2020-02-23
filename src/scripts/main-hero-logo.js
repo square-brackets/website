@@ -19,5 +19,15 @@ const game = new Game(canvas, {
   offsetY: gameTriggerSize.y
 });
 
-gameTrigger.addEventListener('click', () => game.start(), {once: true});
+gameTrigger.addEventListener('click', () => {
+  game.start();
+
+  const heroContentElement = document.querySelector('.js-main-hero-section-content');
+  heroContentElement.addEventListener('transitionend', () => {
+    heroContentElement.remove();
+  }, {once: true});
+
+  heroContentElement.classList.add('is-hidden');
+}, {once: true});
+
 game.showTrigger();
