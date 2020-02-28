@@ -23,11 +23,18 @@ export default class Game {
   start() {
     this.animations = [];
 
-    // this.drawGrid();
     this.generateTriangles();
     this.animateTriangles();
 
     this.loop();
+  }
+
+  pause() {
+    this.isPaused = true;
+  }
+
+  continue() {
+    this.isPaused = false;
   }
 
   stop() {
@@ -35,7 +42,7 @@ export default class Game {
   }
 
   loop() {
-    if (this.isStopped) {
+    if (this.isStopped || this.isPaused) {
       return;
     }
 
@@ -51,6 +58,11 @@ export default class Game {
 
       return percentage < 1;
     });
+
+    if (this.animations.length === 0) {
+      this.pause();
+      return;
+    }
 
     requestAnimationFrame(() => this.loop());
   }
