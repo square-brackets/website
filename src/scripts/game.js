@@ -139,60 +139,18 @@ export default class Game {
     }
   }
 
-  async animateTriangles() {
-    const drawnTriangles = [];
-
+  animateTriangles() {
     const triggerTriangle = this.triangles.find((triangle) => {
       return triangle.x === this.originalOffsetX && triangle.y === this.originalOffsetY
     });
 
-    const triangleGroups = [[triggerTriangle]]; // Group of traingles scheduled to be drawn
-    let resolvedTriangles = [triggerTriangle]; // Triangles that are drawn or scheduled to be drawn
+    this.triangles.forEach((triangle) => {
+      const dx = triggerTriangle.x - triangle.x;
+      const dy = triggerTriangle.y - triangle.y;
+      const distanceToTrigger = Math.sqrt(dx * dx + dy * dy);
+      const delay = distanceToTrigger + Math.random() * 150;
 
-    while (triangleGroups.length) {
-      const group = triangleGroups.shift();
-      const nextGroup = [];
-
-      group.forEach((triangle) => {
-        this.animateTriangle(triangle);
-        drawnTriangles.push(triangle);
-
-        const rightTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.RIGHT];
-        const leftTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.LEFT];
-        const bottomTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.BOTTOM];
-        const topTriangle = triangle.neighbourhood[NEIGHBORHOOD_POSITION.TOP];
-
-        [
-          NEIGHBORHOOD_POSITION.RIGHT, NEIGHBORHOOD_POSITION.LEFT,
-          NEIGHBORHOOD_POSITION.BOTTOM, NEIGHBORHOOD_POSITION.TOP
-        ].forEach((position) => {
-          const neighbourTriangle = triangle.neighbourhood[position];
-
-          if (
-            neighbourTriangle &&
-            !resolvedTriangles.includes(neighbourTriangle) &&
-            !nextGroup.includes(neighbourTriangle)
-          ) {
-            nextGroup.push(neighbourTriangle);
-          }
-        });
-      });
-
-      if (nextGroup.length) {
-        triangleGroups.push(nextGroup);
-        resolvedTriangles = resolvedTriangles.concat(nextGroup);
-      }
-
-       // TODO: Add delay to animation and replace async with delayed animation;
-      await new Promise((resolve) => {
-        setTimeout(resolve, 50);
-      });
-    }
-  }
-
-  animateTriangle(triangle) {
-    this.animate((percentage) => {
-      triangle.draw(this.context, percentage);
-    }, 500);
+      this.animate((percentage) => triangle.draw(this.context, percentage), {duration: 500, delay});
+    });
   }
 }
