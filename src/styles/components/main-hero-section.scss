@@ -45,16 +45,16 @@
     display: flex;
     align-items: flex-end;
     overflow: hidden;
-    width: 100px;
-    height: 86px;
+    width: 50px;
+    height: 43px;
     margin: 0 2vw;
   }
 
   &__game-trigger {
     -webkit-appearance: none;
-    width: 71px;
+    width: 30px;
     cursor: pointer;
-    height: 71px;
+    height: 30px;
     padding: 0;
     border: 0;
     transform-origin: bottom left;
