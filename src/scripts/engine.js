@@ -4,12 +4,15 @@ import noise from './noise';
 export default class Engine {
   constructor() {
     this.animations = [];
+    this.isStopped = true;
   }
 
   start() {
-    this.isStopped = false;
+    if (this.isStopped) {
+      this.isStopped = false;
 
-    this.loop();
+      this.loop();
+    }
   }
 
   stop() {
