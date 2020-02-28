@@ -41,20 +41,28 @@ export default class Game {
 
     const time = Date.now();
 
-    this.animations.forEach(({drawFunction, startTime, duration}) => {
-      const percentage = (time - startTime) / duration;
+    this.animations = this.animations.filter(({drawFunction, startTime, duration, delay}) => {
+      if (time - startTime < delay) {
+        return true;
+      }
+
+      const percentage = Math.min((time - (startTime + delay)) / duration, 1);
       drawFunction(percentage);
+
+      return percentage < 1;
     });
 
     requestAnimationFrame(() => this.loop());
   }
 
-  // TODO: Add delay
-  animate(drawFunction, duration) {
+  animate(drawFunction, {duration, delay}) {
+    this.continue();
+
     this.animations.push({
       startTime: Date.now(),
       drawFunction,
-      duration
+      duration,
+      delay
     });
   }
 
