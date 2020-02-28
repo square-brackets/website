@@ -1,11 +1,13 @@
 import Triangle, {ORIENTATIONS, NEIGHBORHOOD_POSITION, TRIANGLE_SIZE, TRIANGLE_HEIGHT} from './triangle';
 import noise from './noise';
+import Engine from './engine';
 
 export default class Game {
   constructor(canvas, options = {}) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
 
+    this.engine = new Engine();
     this.triangles = [];
 
     this.numberOfRows = Math.ceil(this.canvas.height / TRIANGLE_HEIGHT);
@@ -21,61 +23,10 @@ export default class Game {
   }
 
   start() {
-    this.animations = [];
-
     this.generateTriangles();
     this.animateTriangles();
 
-    this.loop();
-  }
-
-  pause() {
-    this.isPaused = true;
-  }
-
-  continue() {
-    this.isPaused = false;
-  }
-
-  stop() {
-    this.isStopped = true;
-  }
-
-  loop() {
-    if (this.isStopped || this.isPaused) {
-      return;
-    }
-
-    const time = Date.now();
-
-    this.animations = this.animations.filter(({drawFunction, startTime, duration, delay}) => {
-      if (time - startTime < delay) {
-        return true;
-      }
-
-      const percentage = Math.min((time - (startTime + delay)) / duration, 1);
-      drawFunction(percentage);
-
-      return percentage < 1;
-    });
-
-    if (this.animations.length === 0) {
-      this.pause();
-      return;
-    }
-
-    requestAnimationFrame(() => this.loop());
-  }
-
-  animate(drawFunction, {duration, delay}) {
-    this.continue();
-
-    this.animations.push({
-      startTime: Date.now(),
-      drawFunction,
-      duration,
-      delay
-    });
+    this.engine.start();
   }
 
   showTrigger() {
@@ -162,7 +113,7 @@ export default class Game {
       const distanceToTrigger = Math.sqrt(dx * dx + dy * dy);
       const delay = distanceToTrigger + Math.random() * 150;
 
-      this.animate((percentage) => triangle.draw(this.context, percentage), {duration: 500, delay});
+      this.engine.animate((percentage) => triangle.draw(this.context, percentage), {duration: 500, delay});
     });
   }
 }
