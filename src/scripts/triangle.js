@@ -23,14 +23,6 @@ export const TERRAINS = {
   MOUNTAIN: 5
 }
 
-export const TERRAIN_TO_COLOR = {
-  [TERRAINS.WATER]: (opacity) => `rgba(0, 99, 178, ${opacity})`,
-  [TERRAINS.GRASS]: (opacity) => `rgba(136, 180, 100, ${opacity})`,
-  [TERRAINS.SAND]: (opacity) => `rgba(239, 221, 165, ${opacity})`,
-  [TERRAINS.FOREST]: (opacity) => `rgba(0, 100, 0, ${opacity})`,
-  [TERRAINS.MOUNTAIN]: (opacity) => `rgba(255, 255, 255, ${opacity})`
-}
-
 export default class Triangle {
   constructor({orientation, x, y, terrainGradient}, neighbourhood = []) {
     this.orientation = orientation;
@@ -38,19 +30,31 @@ export default class Triangle {
     this.y = y;
     this.neighbourhood = {};
     this.terrainGradient = terrainGradient;
+
+    if (terrainGradient < 0.2) {
+      this.terrainColor = (opacity) => `rgba(0, 99, 178, ${opacity})`;
+    } else if (terrainGradient < 0.3) {
+      this.terrainColor = (opacity) => `rgba(239, 221, 165, ${opacity})`;
+    } else if (terrainGradient < 0.6) {
+      this.terrainColor = (opacity) => `rgba(136, 180, 100, ${opacity})`;
+    } else if (terrainGradient < 0.8) {
+      this.terrainColor = (opacity) => `rgba(0, 100, 0, ${opacity})`;
+    } else {
+      this.terrainColor = (opacity) => `rgba(255, 255, 255, ${opacity})`
+    }
   }
 
   addNeighbour(position, neighbourTriangle) {
     this.neighbourhood[position] = neighbourTriangle;
   }
 
-  draw(context, percentage) {
+  draw(context, percentage = 1) {
     const x = this.x;
     const y = this.y + (this.orientation === ORIENTATIONS.UP ? 1 : 0) * TRIANGLE_HEIGHT;
     const dx = 3 / Math.sqrt(3) * PADDING;
     const dy = 2 * PADDING;
 
-    context.fillStyle = TERRAIN_TO_COLOR[this.terrain](percentage);
+    context.fillStyle = this.terrainColor(percentage);
 
     context.beginPath();
 
@@ -66,20 +70,5 @@ export default class Triangle {
 
     context.closePath();
     context.fill();
-  }
-
-  get terrain() {
-    const terrainGradient = this.terrainGradient;
-    if (terrainGradient < 0.2) {
-      return TERRAINS.WATER;
-    } else if (terrainGradient < 0.3) {
-      return TERRAINS.SAND;
-    } else if (terrainGradient < 0.6) {
-      return TERRAINS.GRASS;
-    } else if (terrainGradient < 0.8) {
-      return TERRAINS.FOREST;
-    } else {
-      return TERRAINS.MOUNTAIN;
-    }
   }
 }
