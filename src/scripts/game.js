@@ -20,13 +20,13 @@ export default class Game {
     this.originalOffsetY = options.offsetY;
     this.offsetX = options.offsetX % (TRIANGLE_SIZE / 2);
     this.offsetY = options.offsetY % TRIANGLE_HEIGHT;
+
+    this.generateTriangles();
   }
 
   start() {
-    this.generateTriangles();
-    this.animateTriangles();
-
     this.engine.start();
+    this.animateTriangles();
   }
 
   showTrigger() {
@@ -113,7 +113,7 @@ export default class Game {
       const distanceToTrigger = Math.sqrt(dx * dx + dy * dy);
       const delay = distanceToTrigger + Math.random() * 150;
 
-      this.engine.animate((percentage) => triangle.draw(this.context, percentage), {duration: 500, delay});
+      this.engine.animate((percentage) => triangle.drawTerrain(this.context, percentage), {duration: 500, delay});
     });
   }
 }

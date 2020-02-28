@@ -48,13 +48,11 @@ export default class Triangle {
     this.neighbourhood[position] = neighbourTriangle;
   }
 
-  draw(context, percentage = 1) {
+  draw(context) {
     const x = this.x;
     const y = this.y + (this.orientation === ORIENTATIONS.UP ? 1 : 0) * TRIANGLE_HEIGHT;
     const dx = 3 / Math.sqrt(3) * PADDING;
     const dy = 2 * PADDING;
-
-    context.fillStyle = this.terrainColor(percentage);
 
     context.beginPath();
 
@@ -69,6 +67,12 @@ export default class Triangle {
     }
 
     context.closePath();
+
+  }
+
+  drawTerrain(context, percentage = 1) {
+    context.fillStyle = this.terrainColor(percentage);
+    this.draw(context);
     context.fill();
   }
 }
