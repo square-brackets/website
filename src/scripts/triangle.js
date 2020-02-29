@@ -1,5 +1,5 @@
 export const TRIANGLE_SIZE = 50;
-export const TRIANGLE_HEIGHT = TRIANGLE_SIZE * 0.87 // Equilateral triangles have height equal to 86.6% (sqrt(3)/2);
+export const TRIANGLE_HEIGHT = Math.round(TRIANGLE_SIZE * 0.866) // Equilateral triangles have height equal to 86.6% (sqrt(3)/2);
 const CORNER_RADIUS = 2;
 const PADDING = 2;
 
