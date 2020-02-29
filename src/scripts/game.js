@@ -1,6 +1,7 @@
 import Triangle, {ORIENTATIONS, NEIGHBORHOOD_POSITION, TRIANGLE_SIZE, TRIANGLE_HEIGHT} from './triangle';
 import noise from './noise';
 import Engine from './engine';
+import Player from './player';
 
 export default class Game {
   constructor(canvas, options = {}) {
@@ -47,6 +48,9 @@ export default class Game {
     this.context.fillStyle = 'red';
     triggerTriangle.drawTriangle();
     this.context.fill();
+
+    this.player = new Player(this.context, this.originalOffsetX, this.originalOffsetY);
+    this.engine.addDrawableObject(this.player, 2);
   }
 
   drawGrid() {
