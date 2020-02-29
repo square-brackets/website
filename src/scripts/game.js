@@ -7,7 +7,9 @@ export default class Game {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
 
-    this.engine = new Engine();
+    this.engine = new Engine({
+      beforeLoop: () => this.clearCanvas()
+    });
     this.triangles = [];
 
     this.numberOfRows = Math.ceil(this.canvas.height / TRIANGLE_HEIGHT);
@@ -26,19 +28,25 @@ export default class Game {
 
   start() {
     this.engine.start();
-    this.animateTriangles();
+  }
+
+  clearCanvas() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   showTrigger() {
     // TODO: mousemove
 
     const triggerTriangle = new Triangle({
+      context: this.context,
       orientation: ORIENTATIONS.UP,
       x: this.originalOffsetX,
       y: this.originalOffsetY
     });
 
-    triggerTriangle.draw(this.context);
+    this.context.fillStyle = 'red';
+    triggerTriangle.drawTriangle();
+    this.context.fill();
   }
 
   drawGrid() {
@@ -76,11 +84,20 @@ export default class Game {
     for (var i = 0; i < this.trianglesInColumn; i++) {
       for (var j = 0; j < this.trianglesInRow; j++) {
         const orientation = (i + j) % 2 ? ORIENTATIONS.UP : ORIENTATIONS.DOWN;
+
+        const x = (j - 2) * TRIANGLE_SIZE / 2 + this.offsetX;
+        const y = (i - 1) * TRIANGLE_HEIGHT + this.offsetY;
+
+        const dx = this.originalOffsetX - x;
+        const dy = this.originalOffsetY - y;
+        const distanceToTrigger = Math.sqrt(dx * dx + dy * dy);
+        const delay = distanceToTrigger + Math.random() * 150;
+
         const triangle = new Triangle({
-          orientation,
-          x: (j - 2) * TRIANGLE_SIZE / 2 + this.offsetX,
-          y: (i - 1) * TRIANGLE_HEIGHT + this.offsetY,
-          terrainGradient: (noise(i * 0.04 + offset, j * 0.04 + offset) + 1) / 2
+          context: this.context,
+          orientation, x, y,
+          terrainGradient: (noise(i * 0.04 + offset, j * 0.04 + offset) + 1) / 2,
+          initialDelay: delay
         });
 
         this.triangles.push(triangle);
@@ -100,20 +117,5 @@ export default class Game {
         }
       }
     }
-  }
-
-  animateTriangles() {
-    const triggerTriangle = this.triangles.find((triangle) => {
-      return triangle.x === this.originalOffsetX && triangle.y === this.originalOffsetY
-    });
-
-    this.triangles.forEach((triangle) => {
-      const dx = triggerTriangle.x - triangle.x;
-      const dy = triggerTriangle.y - triangle.y;
-      const distanceToTrigger = Math.sqrt(dx * dx + dy * dy);
-      const delay = distanceToTrigger + Math.random() * 150;
-
-      this.engine.animate((percentage) => triangle.drawTerrain(this.context, percentage), {duration: 500, delay});
-    });
   }
 }

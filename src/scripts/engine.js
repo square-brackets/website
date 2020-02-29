@@ -2,12 +2,15 @@ import Triangle, {ORIENTATIONS, NEIGHBORHOOD_POSITION, TRIANGLE_SIZE, TRIANGLE_H
 import noise from './noise';
 
 export default class Engine {
-  constructor() {
-    this.animations = [];
+  constructor(options) {
+    this.drawableObjects = [];
     this.isStopped = true;
+    this.options = options;
   }
 
   start() {
+    this.startTime = Date.now();
+
     if (this.isStopped) {
       this.isStopped = false;
 
@@ -24,39 +27,22 @@ export default class Engine {
       return;
     }
 
-    this.performAnimations();
+    this.time = Date.now() - this.startTime;
+
+    if (this.options && this.options.beforeLoop) {
+      this.options.beforeLoop();
+    }
+
+    this.performDrawing();
 
     requestAnimationFrame(() => this.loop());
   }
 
-  performAnimations() {
-    const time = Date.now();
-
-    this.animations = this.animations.filter(({drawFunction, startTime, duration, delay}) => {
-      if (time - startTime < delay) {
-        return true;
-      }
-
-      const percentage = Math.min((time - (startTime + delay)) / duration, 1);
-      drawFunction(percentage);
-
-      return percentage < 1;
-    });
-
-    if (this.animations.length === 0) {
-      this.stop();
-      return;
-    }
+  performDrawing() {
+    this.drawableObjects.forEach((drawable) => drawable.draw(this.time));
   }
 
-  animate(drawFunction, {duration, delay}) {
-    this.animations.push({
-      startTime: Date.now(),
-      drawFunction,
-      duration,
-      delay
-    });
-
-    this.start();
+  addDrawableObject(drawable) {
+    this.drawableObjects.push(drawable);
   }
 }

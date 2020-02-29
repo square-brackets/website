@@ -4,10 +4,7 @@ const gameTrigger = document.querySelector('.js-game-trigger');
 const gameWrapper = document.querySelector('.js-game-wrapper');
 const canvas = gameWrapper.querySelector('#game-canvas');
 
-
 const gameWrapperSize = gameWrapper.getBoundingClientRect();
-
-// update canvas size
 canvas.width = gameWrapperSize.width;
 canvas.height = gameWrapperSize.height;
 

@@ -24,23 +24,25 @@ export const TERRAINS = {
 }
 
 export default class Triangle {
-  constructor({orientation, x, y, terrainGradient}, neighbourhood = []) {
+  constructor({context, orientation, x, y, terrainGradient, initialDelay}, neighbourhood = []) {
+    this.context = context;
     this.orientation = orientation;
     this.x = x;
     this.y = y;
     this.neighbourhood = {};
     this.terrainGradient = terrainGradient;
+    this.initialDelay = initialDelay;
 
     if (terrainGradient < 0.2) {
-      this.terrainColor = (opacity) => `rgba(0, 99, 178, ${opacity})`;
+      this.terrainColor = 'rgb(0, 99, 178)';
     } else if (terrainGradient < 0.3) {
-      this.terrainColor = (opacity) => `rgba(239, 221, 165, ${opacity})`;
+      this.terrainColor = 'rgb(239, 221, 165)';
     } else if (terrainGradient < 0.6) {
-      this.terrainColor = (opacity) => `rgba(136, 180, 100, ${opacity})`;
+      this.terrainColor = 'rgb(136, 180, 100)';
     } else if (terrainGradient < 0.8) {
-      this.terrainColor = (opacity) => `rgba(0, 100, 0, ${opacity})`;
+      this.terrainColor = 'rgb(0, 100, 0)';
     } else {
-      this.terrainColor = (opacity) => `rgba(255, 255, 255, ${opacity})`
+      this.terrainColor = 'rgb(255, 255, 255)';
     }
   }
 
@@ -48,31 +50,39 @@ export default class Triangle {
     this.neighbourhood[position] = neighbourTriangle;
   }
 
-  draw(context) {
+  draw(time) {
+    if (time < this.initialDelay) {
+      return
+    } else if (time < this.initialDelay + 500) {
+      const percentage = Math.min((time - this.initialDelay) / 500, 1);
+      const opacity = percentage * (2 - percentage); //ease-out-quad
+      this.context.globalAlpha = opacity;
+    }
+
+    this.context.fillStyle = this.terrainColor;
+    this.drawTriangle();
+    this.context.fill();
+    this.context.globalAlpha = 1;
+  }
+
+  drawTriangle() {
     const x = this.x;
     const y = this.y + (this.orientation === ORIENTATIONS.UP ? 1 : 0) * TRIANGLE_HEIGHT;
     const dx = 3 / Math.sqrt(3) * PADDING;
     const dy = 2 * PADDING;
 
-    context.beginPath();
+    this.context.beginPath();
 
     if (this.orientation === ORIENTATIONS.UP) {
-      context.arc(x + dx + Math.sqrt(3) * CORNER_RADIUS, y - PADDING - CORNER_RADIUS, CORNER_RADIUS, 7 * Math.PI / 6, Math.PI / 2, true);
-      context.arc(x + TRIANGLE_SIZE - dx - Math.sqrt(3) * CORNER_RADIUS, y - PADDING - CORNER_RADIUS, CORNER_RADIUS, Math.PI / 2, -1 * Math.PI / 6, true);
-      context.arc(x + TRIANGLE_SIZE / 2, y - TRIANGLE_HEIGHT + dy + 2 * CORNER_RADIUS, CORNER_RADIUS, -1 * Math.PI / 6, -5 * Math.PI / 6, true);
+      this.context.arc(x + dx + Math.sqrt(3) * CORNER_RADIUS, y - PADDING - CORNER_RADIUS, CORNER_RADIUS, 7 * Math.PI / 6, Math.PI / 2, true);
+      this.context.arc(x + TRIANGLE_SIZE - dx - Math.sqrt(3) * CORNER_RADIUS, y - PADDING - CORNER_RADIUS, CORNER_RADIUS, Math.PI / 2, -1 * Math.PI / 6, true);
+      this.context.arc(x + TRIANGLE_SIZE / 2, y - TRIANGLE_HEIGHT + dy + 2 * CORNER_RADIUS, CORNER_RADIUS, -1 * Math.PI / 6, -5 * Math.PI / 6, true);
     } else {
-      context.arc(x + dx + Math.sqrt(3) * CORNER_RADIUS, y + PADDING + CORNER_RADIUS, CORNER_RADIUS, 5 * Math.PI / 6, 3 * Math.PI / 2);
-      context.arc(x + TRIANGLE_SIZE - dx - Math.sqrt(3) * CORNER_RADIUS, y + PADDING + CORNER_RADIUS, CORNER_RADIUS, -1 * Math.PI / 2, Math.PI / 6);
-      context.arc(x + TRIANGLE_SIZE / 2, y + TRIANGLE_HEIGHT - dy - 2 * CORNER_RADIUS, CORNER_RADIUS, Math.PI / 6, 5 * Math.PI / 6);
+      this.context.arc(x + dx + Math.sqrt(3) * CORNER_RADIUS, y + PADDING + CORNER_RADIUS, CORNER_RADIUS, 5 * Math.PI / 6, 3 * Math.PI / 2);
+      this.context.arc(x + TRIANGLE_SIZE - dx - Math.sqrt(3) * CORNER_RADIUS, y + PADDING + CORNER_RADIUS, CORNER_RADIUS, -1 * Math.PI / 2, Math.PI / 6);
+      this.context.arc(x + TRIANGLE_SIZE / 2, y + TRIANGLE_HEIGHT - dy - 2 * CORNER_RADIUS, CORNER_RADIUS, Math.PI / 6, 5 * Math.PI / 6);
     }
 
-    context.closePath();
-
-  }
-
-  drawTerrain(context, percentage = 1) {
-    context.fillStyle = this.terrainColor(percentage);
-    this.draw(context);
-    context.fill();
+    this.context.closePath();
   }
 }
