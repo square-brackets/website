@@ -1,9 +1,11 @@
 import Triangle, {ORIENTATIONS, NEIGHBORHOOD_POSITION, TRIANGLE_SIZE, TRIANGLE_HEIGHT} from './triangle';
 import noise from './noise';
 
+const Z_INDICES = [0, 1, 2];
+
 export default class Engine {
   constructor(options) {
-    this.drawableObjects = [];
+    this.drawableObjects = {};
     this.isStopped = true;
     this.options = options;
   }
@@ -39,10 +41,14 @@ export default class Engine {
   }
 
   performDrawing() {
-    this.drawableObjects.forEach((drawable) => drawable.draw(this.time));
+    Z_INDICES.forEach(() => {
+      const objects = this.drawableObjects[0] || [];
+      objects.forEach((drawable) => drawable.draw(this.time));
+    });
   }
 
-  addDrawableObject(drawable) {
-    this.drawableObjects.push(drawable);
+  addDrawableObject(drawable, z) {
+    this.drawableObjects[z] = this.drawableObjects[z] || [];
+    this.drawableObjects[z].push(drawable);
   }
 }

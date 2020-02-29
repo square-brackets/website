@@ -115,6 +115,7 @@ export default class Game {
             upperTriangle.addNeighbour(NEIGHBORHOOD_POSITION.BOTTOM, triangle);
           }
         }
+        this.engine.addDrawableObject(triangle, 1);
       }
     }
   }
