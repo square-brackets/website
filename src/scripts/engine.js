@@ -41,8 +41,8 @@ export default class Engine {
   }
 
   performDrawing() {
-    Z_INDICES.forEach(() => {
-      const objects = this.drawableObjects[0] || [];
+    Z_INDICES.forEach((zIndex) => {
+      const objects = this.drawableObjects[zIndex] || [];
       objects.forEach((drawable) => drawable.draw(this.time));
     });
   }
