@@ -12,7 +12,7 @@ export const NEIGHBORHOOD_POSITION = {
 
 export const ORIENTATIONS = {
   UP: 1,
-  DOWN: -1
+  DOWN: 0
 };
 
 export default class Triangle {
@@ -25,13 +25,17 @@ export default class Triangle {
     this.terrainGradient = terrainGradient;
     this.initialDelay = initialDelay;
 
-    if (terrainGradient < 0.2) {
+    this.updateTerrainColor();
+  }
+
+  updateTerrainColor() {
+    if (this.terrainGradient < 0.2) {
       this.terrainColor = 'rgb(0, 99, 178)';
-    } else if (terrainGradient < 0.3) {
+    } else if (this.terrainGradient < 0.3) {
       this.terrainColor = 'rgb(239, 221, 165)';
-    } else if (terrainGradient < 0.6) {
+    } else if (this.terrainGradient < 0.6) {
       this.terrainColor = 'rgb(136, 180, 100)';
-    } else if (terrainGradient < 0.8) {
+    } else if (this.terrainGradient < 0.8) {
       this.terrainColor = 'rgb(0, 100, 0)';
     } else {
       this.terrainColor = 'rgb(255, 255, 255)';
