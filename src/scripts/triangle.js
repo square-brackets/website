@@ -15,14 +15,6 @@ export const ORIENTATIONS = {
   DOWN: -1
 };
 
-export const TERRAINS = {
-  WATER: 1,
-  GRASS: 2,
-  SAND: 3,
-  FOREST: 4,
-  MOUNTAIN: 5
-}
-
 export default class Triangle {
   constructor({context, orientation, x, y, terrainGradient, initialDelay}, neighbourhood = []) {
     this.context = context;
