@@ -7,6 +7,6 @@ export default class Player {
 
   draw() {
     this.context.fillStyle = 'red';
-    this.context.fillRect(this.x, this.y, 10, 10);
+    this.context.fillRect(this.x, this.y, 20, 20);
   }
 }
