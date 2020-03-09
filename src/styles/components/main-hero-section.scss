@@ -41,24 +41,12 @@
     z-index: -1;
   }
 
-  &__game-trigger-wrapper {
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-    width: 50px;
-    height: 43px;
-    margin: 0 2vw;
-  }
-
   &__game-trigger {
     -webkit-appearance: none;
-    width: 30px;
-    cursor: pointer;
-    height: 30px;
+    width: 64px;
+    height: 64px;
+    margin: 0 2vw;
     padding: 0;
-    border: 0;
-    transform-origin: bottom left;
-    transform: scaleY(1.732) rotateZ(45deg);
-    opacity: 0;
+    cursor: pointer;
   }
 }
