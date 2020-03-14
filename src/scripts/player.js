@@ -1,13 +1,12 @@
 export default class Player {
-  constructor(context, {tile}) {
-    this.context = context;
+  constructor({tile}) {
     this.tile = tile;
   }
 
-  draw() {
+  draw(context) {
     const {x, y} = this.tile;
-    this.context.fillStyle = 'red';
-    this.context.fillRect(x + 8, y + 8, 48, 48);
+    context.fillStyle = 'red';
+    context.fillRect(x + 8, y + 8, 48, 48);
   }
 
   moveToTile(tile) {

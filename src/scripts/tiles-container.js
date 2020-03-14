@@ -1,16 +1,21 @@
 import Tile, {TILE_SIZE} from './tile';
 import noise from './noise';
 
-const NOISE_SCALE_FACTOR = 0.07;
-const NOISE_OFFSET = Math.random();
+const NOISE_SCALE_FACTOR = 0.06;
+const NOISE_OFFSET = Math.random() * 10;
 
 export default class TilesContainer {
-  constructor({width, height, offsetX, offsetY}) {
+  constructor({width, height, offsetX, offsetY, triggerCenterX, triggerCenterY, renderer}) {
     this.width = width;
     this.height = height;
     this.offsetX = offsetX;
     this.offsetY = offsetY;
+    this.triggerCenterX = triggerCenterX;
+    this.triggerCenterY = triggerCenterY;
+    this.renderer = renderer;
+
     this.tiles = [];
+    this.initialAnimationDelays = [];
 
     this.tilesInRow = Math.floor((width + offsetX) / TILE_SIZE) + 2;
     this.tilesInColumn = Math.floor((height + offsetY) / TILE_SIZE) + 2;
@@ -20,20 +25,23 @@ export default class TilesContainer {
   }
 
   generateTiles() {
+    const {i: triggerI, j: triggerJ} = this.getPositionFromCoordinates(this.triggerCenterX, this.triggerCenterY);
+
     for (var i = 0; i < this.tilesInRow; i++) {
       this.tiles[i] = [];
+      this.initialAnimationDelays[i] = [];
 
       for (var j = 0; j < this.tilesInColumn; j++) {
-        // const dx = this.originalOffsetX - x;
-        // const dy = this.originalOffsetY - y;
-        // const distanceToTrigger = Math.sqrt(Math.abs(dx) * Math.abs(dx) + Math.abs(dy) * Math.abs(dy));
-        // const delay = distanceToTrigger + Math.random() * 150;
+        const dx = triggerI - i;
+        const dy = triggerJ - j;
+        const distanceToTrigger = Math.sqrt(Math.abs(dx) * Math.abs(dx) + Math.abs(dy) * Math.abs(dy));
+        const delay = distanceToTrigger * 50 + Math.random() * 150;
+        this.initialAnimationDelays[i][j] = delay;
 
         const tile = new Tile({
           i, j,
           context: this.context,
           terrainGradient: this.getNoiseForCoordinates(i, j),
-          // initialDelay: delay
           tilesContainer: this
         });
 
@@ -49,12 +57,17 @@ export default class TilesContainer {
     return (terrainGradient + 1) / 2;
   }
 
-  getTileForCoordinates(x, y) {
+  getPositionFromCoordinates(x, y) {
     const normalizedX = x + this.offsetX;
     const normalizedY = y + this.offsetY;
 
     const i = Math.floor(normalizedX / TILE_SIZE);
     const j = Math.floor(normalizedY / TILE_SIZE);
+    return {i, j};
+  }
+
+  getTileForCoordinates(x, y) {
+    const {i, j} = this.getPositionFromCoordinates(x, y);
 
     return this.tiles[i][j];
   }
@@ -108,5 +121,42 @@ export default class TilesContainer {
         this.tiles[i][j].setPosition(i, j);
       }
     }
+  }
+
+  animateTiles(context, startTime = Date.now()) {
+    let shouldRedraw = false;
+
+    return this.renderer.schedule((time) => {
+      context.clearRect(0, 0, this.width, this.height);
+
+      this.tiles.forEach((tileColumn, i) => {
+        tileColumn.forEach((tile, j) => {
+          const delay = this.initialAnimationDelays[i][j];
+          const percentage = Math.max(Math.min((time - startTime - delay) / 500, 1), 0);
+          const opacity = percentage * (2 - percentage); // ease-out-quad
+          context.globalAlpha = opacity;
+
+          tile.draw(context);
+
+          shouldRedraw = shouldRedraw || percentage < 1;
+        });
+      });
+
+      context.globalAlpha = 1;
+    }).then(() => {
+      if (shouldRedraw) {
+        return this.animateTiles(context, startTime);
+      }
+    });
+  }
+
+  redrawTiles(context) {
+    this.renderer.schedule(() => {
+      this.tiles.forEach((tileColumn) => {
+        tileColumn.forEach((tile) => {
+          tile.draw(context);
+        });
+      });
+    });
   }
 }

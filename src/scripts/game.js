@@ -2,6 +2,7 @@
 
 import {TILE_SIZE} from './tile';
 import Player from './player';
+import Renderer from './renderer';
 import TilesContainer from './tiles-container';
 
 export default class Game {
@@ -14,48 +15,40 @@ export default class Game {
     this.offsetX = this.originalOffsetX % TILE_SIZE;
     this.offsetY = this.originalOffsetY % TILE_SIZE;
 
+    this.renderer = new Renderer();
+
     this.tilesContainer = new TilesContainer({
       width: this.canvas.width,
       height: this.canvas.height,
       offsetX: this.offsetX,
       offsetY: this.offsetY,
+      triggerCenterX: this.originalOffsetX - this.offsetX + TILE_SIZE / 2,
+      triggerCenterY: this.originalOffsetY - this.offsetY + TILE_SIZE / 2,
+      renderer: this.renderer
     });
 
     this.tilesContainer.generateTiles();
   }
 
-  start() {
-    this.startTime = Date.now();
+  async start() {
+    await this.tilesContainer.animateTiles(this.context)
 
     const playerTile = this.tilesContainer.getTileForCoordinates(this.originalOffsetX, this.originalOffsetY);
 
-    this.player = new Player(this.context, {
+    this.player = new Player({
       tile: playerTile
     });
 
+    this.player.draw(this.context);
     this.addControls();
-    this.scheduleRedraw();
   }
 
   clearCanvas() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  showTrigger() {
-    // TODO: mousemove
-
-    // this.triggerTile = new Tile({
-    //   context: this.context,
-    //   x: this.originalOffsetX,
-    //   y: this.originalOffsetY
-    // });
-    //
-    // this.triggerTile.draw();
-  }
-
   addControls() {
     document.addEventListener('keydown', (event) => {
-      const currentTile = this.player.tile;
       let nextTilePosition;
       switch (event.code) {
         case 'ArrowUp':
@@ -80,6 +73,7 @@ export default class Game {
           break;
       }
 
+      const currentTile = this.player.tile;
       if (nextTilePosition) {
         if (!currentTile[nextTilePosition].isCollision) {
           this.player.moveToTile(currentTile[nextTilePosition]);
@@ -119,34 +113,15 @@ export default class Game {
 
     this.hasScheduledRedrawn = true;
 
-    this.redrawPromise = new Promise((resolve) => {
-      requestAnimationFrame(() => {
-        const time = Date.now() - this.startTime;
-        this.clearCanvas();
-
-        const shouldRedrawForTiles = this.redrawTiles(time);
-        const shouldRedrawForPlayer = this.player.draw(time);
-
-        this.hasScheduledRedrawn = false;
-
-        if (shouldRedrawForTiles || shouldRedrawForPlayer) {
-          this.scheduleRedraw();
-        }
-
-        resolve();
-      });
+    this.renderer.schedule(() => {
+      this.clearCanvas();
+      this.hasScheduledRedrawn = false;
     });
-  }
 
-  redrawTiles(time) {
-    return this.tilesContainer.tiles.reduce((shouldRedrawRow, rowTiles) => {
-      return rowTiles.reduce((shouldRedraw, tile) => {
-        return tile.draw(this.context, time) || shouldRedraw;
-      }, shouldRedrawRow);
-    }, false);
-  }
+    this.tilesContainer.redrawTiles(this.context);
 
-  animateTilesEntry() {
-    // this.
+    this.renderer.schedule(() => {
+      this.player.draw(this.context);
+    });
   }
 }

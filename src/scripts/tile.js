@@ -48,29 +48,9 @@ export default class Tile {
     return null;
   }
 
-  draw(context, time) {
-    if (time < this.initialDelay) {
-      return true;
-    } else if (time < this.initialDelay + 500) {
-      const percentage = Math.min((time - this.initialDelay) / 500, 1);
-      const opacity = percentage * (2 - percentage); //ease-out-quad
-      context.globalAlpha = opacity;
-
-      let offsetY = 0;
-      if (this.terrainGradient >= 0.75) {
-        offsetY = percentage < 0.75 ? 3 / 4 * percentage : -1 / 4 * percentage + 4;
-      }
-
-      context.fillStyle = this.terrainColor;
-      context.fillRect(this.x, this.y - offsetY * 10, TILE_SIZE, TILE_SIZE);
-      context.globalAlpha = 1;
-    } else {
-      context.fillStyle = this.terrainColor;
-      context.fillRect(this.x, this.y, TILE_SIZE, TILE_SIZE);
-      context.globalAlpha = 1;
-    }
-
-    return time < this.initialDelay + 500;
+  draw(context) {
+    context.fillStyle = this.terrainColor;
+    context.fillRect(this.x, this.y, TILE_SIZE, TILE_SIZE);
   }
 
   updateTerrainColor() {
@@ -93,13 +73,10 @@ export default class Tile {
     } else {
       this.terrainColor = '#F2F2F0';
     }
-
-    // Redraw
   }
 
   setPosition(i, j) {
     this.i = i;
     this.j = j;
-    // Redraw
   }
 }
