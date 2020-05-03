@@ -1,20 +1,30 @@
 :root {
-  --color-base-black: #202020;
-  --color-base-white: #FFFFFF;
+  --color-base-cod-gray: #141414;
+  --color-base-black: #000000;
+  --color-base-white: #FAFAFA;
+  --color-base-red: #FF4438;
+  --color-base-blue: #004CFF;
+  --color-base-purple: #7000FF;
 
-  --color-background-dark: var(--color-base-black);
+  --color-background-dark: var(--color-base-cod-gray);
   --color-background-light: var(--color-base-white);
   --color-text-dark: var(--color-base-black);
   --color-text-light: var(--color-base-white);
+
+  --color-accent: var(--color-base-red);
 }
 
 @import "~media-blender";
 @import "styles/mixins";
 @import "styles/common";
 
+@import "styles/components/sections/education";
 @import "styles/components/main-hero-section";
-@import "styles/components/header";
+@import "styles/components/interactive-logo";
+@import "styles/components/footer";
+@import "styles/components/section";
+@import "styles/components/sections/hero";
 
-// * {
-//   outline: 1px solid red;
-// }
+* {
+  outline: 1px solid red;
+}
