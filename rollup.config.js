@@ -1,4 +1,5 @@
 import postcss from 'rollup-plugin-postcss';
+import copy from 'rollup-plugin-copy-assets';
 import createHTMLPlugin from './rollup-plugins/create-html';
 
 export default {
@@ -11,6 +12,11 @@ export default {
     postcss({
       extract: true
     }),
-    createHTMLPlugin()
+    createHTMLPlugin(),
+    copy({
+      assets: [
+        'src/assets'
+      ],
+    })
   ]
 };
