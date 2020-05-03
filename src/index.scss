@@ -16,14 +16,15 @@
 
 @import "~media-blender";
 @import "styles/mixins";
+@import "styles/placeholders";
 @import "styles/common";
 
 @import "styles/components/sections/education";
-@import "styles/components/main-hero-section";
+@import "styles/components/sections/hero";
+
 @import "styles/components/interactive-logo";
 @import "styles/components/footer";
 @import "styles/components/section";
-@import "styles/components/sections/hero";
 
 * {
   outline: 1px solid red;

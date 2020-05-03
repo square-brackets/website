@@ -1,3 +1,15 @@
 .education-section {
-  
+  a {
+    @extend %link;
+  }
+}
+
+.education-section__university-description {
+  display: flex;
+  align-items: baseline;
+}
+
+.education-section__university-title {
+  white-space: nowrap;
+  margin-right: 6px;
 }

@@ -1,0 +1,32 @@
+%link {
+  position: relative;
+
+  &:hover {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--color-text-light);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transition: transform 300ms ease-out;
+    transform-origin: left;
+  }
+}
