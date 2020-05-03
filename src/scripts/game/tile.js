@@ -1,5 +1,10 @@
 export const TILE_SIZE = 64;
 
+var myImage = new Image(0, 0);
+myImage.src = '/assets/sprite.png';
+document.body.appendChild(myImage);
+console.log(myImage);
+
 export default class Tile {
   constructor({context, i, j, terrainGradient, initialDelay, tilesContainer}) {
     this.context = context;
@@ -10,10 +15,17 @@ export default class Tile {
     this.tilesContainer = tilesContainer;
 
     this.updateTerrainColor();
+
+    this.hasReward = Math.random() < 0.01;
   }
 
-  get isCollision() {
-    return this.terrainGradient < 0.2 || this.terrainGradient >= 0.75;
+  get elevation() {
+    if (this.terrainGradient < 0.2) {
+      return 0;
+    } else if (this.terrainGradient < 0.75) {
+      return 1;
+    }
+    return 2;
   }
 
   get x() {
@@ -49,8 +61,30 @@ export default class Tile {
   }
 
   draw(context) {
-    context.fillStyle = this.terrainColor;
+    // context.drawImage(myImage, 0, 0, 16, 16, this.x, this.y, 16, 16);
+
+    if (this.bottomTile && this.bottomTile.elevation === 1 && this.elevation === 2 && this.topTile && this.topTile.elevation === 2) {
+      context.fillStyle = 'saddlebrown';
+    } else {
+      context.fillStyle = this.terrainColor;
+    }
+
     context.fillRect(this.x, this.y, TILE_SIZE, TILE_SIZE);
+
+    if (this.leftTile && this.leftTile.elevation === 1 && this.elevation === 2) {
+      context.fillStyle = 'saddlebrown';
+      context.fillRect(this.x, this.y, 5, TILE_SIZE);
+    }
+
+    if (this.rightTile && this.rightTile.elevation === 1 && this.elevation === 2) {
+      context.fillStyle = 'saddlebrown';
+      context.fillRect(this.x + TILE_SIZE - 5, this.y, 5, TILE_SIZE);
+    }
+
+    if (this.hasReward) {
+      context.fillStyle = 'yellow';
+      context.fillRect(this.x + TILE_SIZE / 2 - 5, this.y + TILE_SIZE / 2 - 5, 10, 10);
+    }
   }
 
   updateTerrainColor() {
@@ -69,9 +103,11 @@ export default class Tile {
     } else if (this.terrainGradient < 0.75) {
       this.terrainColor = '#597F1E';
     } else if (this.terrainGradient < 0.95) {
-      this.terrainColor = '#B9B5C3';
+      // this.terrainColor = '#B9B5C3';
+      this.terrainColor = '#82AA28';
     } else {
-      this.terrainColor = '#F2F2F0';
+      // this.terrainColor = '#F2F2F0';
+      this.terrainColor = '#597F1E';
     }
   }
 

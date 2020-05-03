@@ -75,7 +75,7 @@ export default class Game {
 
       const currentTile = this.player.tile;
       if (nextTilePosition) {
-        if (!currentTile[nextTilePosition].isCollision) {
+        if (currentTile.elevation === currentTile[nextTilePosition].elevation) {
           this.player.moveToTile(currentTile[nextTilePosition]);
         }
 
