@@ -32,10 +32,16 @@ a {
 h2 {
   font-size: 64px;
   line-height: 80px;
-  display: flex;
+  display: inline-flex;
   align-items: flex-end;
   margin: 0;
   counter-increment: heading2;
+
+  @include media(tablet down) {
+    font-size: 32px;
+    line-height: 40px;
+    align-items: center;
+  }
 
   &::before {
     content: counter(heading2, decimal-leading-zero);
@@ -49,17 +55,25 @@ h2 {
     align-items: center;
     justify-content: center;
     font-feature-settings: 'tnum' on, 'lnum' on;
-    margin-bottom: 17px;
     margin-right: 20px;
+
+    @include media(desktop up) {
+      margin-bottom: 17px;
+    }
   }
 }
 
 h3 {
   font-size: 36px;
   line-height: 46px;
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
   margin: 0;
+
+  @include media(tablet down) {
+    font-size: 28px;
+    line-height: 32px;
+  }
 
   &::before {
     content: '';
@@ -67,6 +81,11 @@ h3 {
     height: 16px;
     background-color: var(--color-accent);
     margin-right: 8px;
+
+    @include media(tablet down) {
+      width: 12px;
+      height: 12px;
+    }
   }
 }
 

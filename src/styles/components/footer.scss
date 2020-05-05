@@ -4,21 +4,48 @@
   display: flex;
   justify-content: center;
   margin-top: 40px;
+
+  @include media(tablet down) {
+    padding: 48px;
+  }
 }
 
 .footer__container {
-  display: grid;
-  grid-template-columns: repeat(12, 80px);
-  grid-gap: 24px;
-  margin: 0 auto;
+  @extend %container;
+
+  grid-template-areas:
+    "logo logo logo . . . . github github . linkedin linkedin"
+    "cookie cookie cookie . . . . twitter twitter . mail mail";
+
+  @include media(tablet down) {
+    grid-template-columns: 1fr;
+    grid-gap: 32px;
+    padding: 0;
+
+    grid-template-areas:
+      "logo"
+      "github"
+      "twitter"
+      "linkedin"
+      "mail"
+      "cookie";
+  }
 }
 
 .footer__logo {
-  grid-column: 1 / 4;
+  grid-area: logo;
+
+  @include media(tablet down) {
+    margin-bottom: 16px;
+  }
 }
 
 .footer__cookie-note {
-  grid-column: 1 / 4;
+  grid-area: cookie;
+
+  @include media(tablet down) {
+    margin-top: 24px;
+  }
 }
 
 .footer__social-link {
@@ -37,23 +64,19 @@
 }
 
 .footer__social-link--github {
-  grid-column: 8 / 10;
-  grid-row: 1;
+  grid-area: github;
 }
 
 .footer__social-link--twitter {
-  grid-column: 8 / 10;
-  grid-row: 2;
+  grid-area: twitter;
 }
 
 .footer__social-link--linkedin {
-  grid-column: 11 / 13;
-  grid-row: 1;
+  grid-area: linkedin;
 }
 
 .footer__social-link--mail {
-  grid-column: 11 / 13;
-  grid-row: 2;
+  grid-area: mail;
 }
 
 .footer__social-link-text {
