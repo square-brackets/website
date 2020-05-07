@@ -42,7 +42,7 @@
       width: 12px;
       height: 12px;
       position: absolute;
-      bottom: 5px;
+      bottom: 9px;
       left: -24px;
     }
   }
@@ -54,7 +54,6 @@
   font-size: 18px;
   line-height: 1.3;
   font-weight: bold;
-
   margin-left: 12px;
 
   @include media(tablet down) {
