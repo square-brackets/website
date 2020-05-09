@@ -1,10 +1,5 @@
 export const TILE_SIZE = 64;
 
-var myImage = new Image(0, 0);
-myImage.src = '/assets/sprite.png';
-document.body.appendChild(myImage);
-console.log(myImage);
-
 export default class Tile {
   constructor({context, i, j, terrainGradient, initialDelay, tilesContainer}) {
     this.context = context;
