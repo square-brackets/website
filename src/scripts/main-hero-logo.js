@@ -2,31 +2,31 @@ import Game from './game/game';
 
 const gameTrigger = document.querySelector('.js-game-trigger');
 
-gameTrigger.addEventListener('click', () => {
-  const gameWrapper = document.querySelector('.js-game-wrapper');
-  const canvas = gameWrapper.querySelector('#game-canvas');
+if (gameTrigger) {
+  gameTrigger.addEventListener('click', () => {
+    const gameWrapper = document.querySelector('.js-game-wrapper');
+    const canvas = gameWrapper.querySelector('#game-canvas');
 
-  // On resize update canvas size
-  const gameWrapperSize = gameWrapper.getBoundingClientRect();
-  canvas.width = gameWrapperSize.width;
-  canvas.height = gameWrapperSize.height;
+    // On resize update canvas size
+    const gameWrapperSize = gameWrapper.getBoundingClientRect();
+    canvas.width = gameWrapperSize.width;
+    canvas.height = gameWrapperSize.height;
 
-  const gameTriggerSize = gameTrigger.getBoundingClientRect();
-  const game = new Game(canvas, {
-    offsetX: gameTriggerSize.x,
-    offsetY: gameTriggerSize.y
-  });
+    const gameTriggerSize = gameTrigger.getBoundingClientRect();
+    const game = new Game(canvas, {
+      offsetX: gameTriggerSize.x,
+      offsetY: gameTriggerSize.y
+    });
 
-  game.start();
+    game.start();
 
-  window.game = game;
+    window.game = game;
 
-  const heroContentElement = document.querySelector('.js-main-hero-section-content');
-  heroContentElement.addEventListener('transitionend', () => {
-    heroContentElement.remove();
+    const heroContentElement = document.querySelector('.js-main-hero-section-content');
+    heroContentElement.addEventListener('transitionend', () => {
+      heroContentElement.remove();
+    }, {once: true});
+
+    heroContentElement.classList.add('is-hidden');
   }, {once: true});
-
-  heroContentElement.classList.add('is-hidden');
-}, {once: true});
-
-// game.showTrigger();
+}
