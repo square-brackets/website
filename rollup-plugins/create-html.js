@@ -17,6 +17,8 @@ export default function createHTMLPlugin() {
       templateFiles.concat(svgFiles).forEach((filePath) => {
         this.addWatchFile(filePath);
       });
+
+      this.addWatchFile('src/index.ejs');
     },
     async generateBundle(options, bundle) {
       const template = readFileSync('src/index.ejs', {encoding: 'utf-8'});
@@ -27,9 +29,11 @@ export default function createHTMLPlugin() {
         root: 'src/templates/'
       });
 
-      bundle['index.html'] = {
-        fileName: 'index.html', isAsset: true, source: html
-      }
+      this.emitFile({
+        type: 'asset',
+        source: html,
+        fileName: 'index.html'
+      });
     }
   }
 }

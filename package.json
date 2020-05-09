@@ -5,14 +5,14 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "ejs": "^2.6.2",
-    "eslint": "^6.8.0",
-    "glob": "^7.1.4",
+    "ejs": "^3.1.2",
+    "eslint": "^7.0.0",
+    "glob": "^7.1.6",
     "media-blender": "^2.1.0",
-    "node-sass": "^4.13.1",
-    "rollup": "^1.20.0",
-    "rollup-plugin-copy-assets": "^2.0.1",
-    "rollup-plugin-postcss": "^2.0.3"
+    "node-sass": "^4.14.1",
+    "rollup": "^2.8.2",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-postcss": "^3.1.1"
   },
   "scripts": {
     "now-build": "NODE_ENV=production webpack",
