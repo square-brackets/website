@@ -15,6 +15,14 @@
 }
 
 @import "~media-blender";
+
+$media-breakpoints: (
+  mobile: 0 767,
+  tablet: 768 1199,
+  desktop: 1200 1499,
+  large: 1500
+);
+
 @import "styles/mixins";
 @import "styles/placeholders";
 @import "styles/common";

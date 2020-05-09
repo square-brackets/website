@@ -14,8 +14,8 @@
   @extend %container;
 
   grid-template-areas:
-    "logo logo logo . . . . github github . linkedin linkedin"
-    "cookie cookie cookie . . . . twitter twitter . mail mail";
+    "logo logo logo logo logo logo . github github . linkedin linkedin"
+    "cookie cookie cookie cookie cookie cookie . twitter twitter . mail mail";
 
   @include media(tablet down) {
     grid-template-columns: 1fr;
