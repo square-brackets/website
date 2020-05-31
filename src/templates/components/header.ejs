@@ -1,9 +1,6 @@
 <header class="header">
-  <div class="header__name"> Stjepan Petrusa </div>
-  <div class="header__links">
-    <a class="header__link" href="https://github.com/square-brackets" target="_blank" rel="noopener"> GitHub </a>
-    <a class="header__link" href="https://twitter.com/SquareBrackets" target="_blank" rel="noopener"> Twitter </a>
-    <a class="header__link" href="https://www.linkedin.com/in/stjepan-petru%C5%A1a-9a6434102/" target="_blank" rel="noopener"> LinkedIn </a>
-    <a class="header__link" href="mailto:stjepan.petrusa@gmail.com"> Mail </a>
+  <div class="header__content">
+    <%- include('/components/interactive-logo.ejs', {className: "header__logo"}); %>
+    <a class="header__contact-link" href="mailto:stjepan.petrusa@gmail.com" target="_blank" rel="noopener"> Contact me </a>
   </div>
 </header>
