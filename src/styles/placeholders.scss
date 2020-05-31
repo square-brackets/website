@@ -1,6 +1,7 @@
 :root {
   --column-width: 80px;
   --column-gap: 24px;
+  --row-gap: 0;
 
   @include media(desktop) {
     --column-width: 56px;
@@ -10,7 +11,7 @@
 %container {
   display: grid;
   grid-template-columns: repeat(12, minmax(auto, var(--column-width)));
-  grid-gap: var(--column-gap);
+  grid-gap: var(--row-gap) var(--column-gap);
   margin: 0 auto;
 
   @include media(tablet down) {

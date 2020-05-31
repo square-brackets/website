@@ -11,6 +11,8 @@
 }
 
 .footer__container {
+  --row-gap: 24px;
+
   @extend %container;
 
   grid-template-areas:
