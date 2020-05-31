@@ -20,6 +20,12 @@ body {
   counter-reset: heading2;
 }
 
+p {
+  margin: 16px 0;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
 a {
   text-decoration: none;
   color: var(--color-text-light);

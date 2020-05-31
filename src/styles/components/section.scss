@@ -12,6 +12,11 @@
   grid-column: 1 / 12;
 }
 
+.section__paragraphs {
+  margin-top: 40px;
+  grid-column: 3 / 10;
+}
+
 .section__entries {
   grid-column: 6 / 12;
   margin: 72px 0 0;
