@@ -1,6 +1,7 @@
 .footer {
   padding: 80px 0;
-  background: var(--color-base-black);
+  background: var(--color-black);
+  color: var(--color-white);
   display: flex;
   justify-content: center;
   margin-top: 40px;
@@ -53,6 +54,7 @@
 .footer__social-link {
   display: flex;
   align-items: center;
+  color: var(--color-white);
 
   svg {
     margin-right: 24px;
@@ -94,7 +96,7 @@
     right: 0;
     bottom: 0;
     height: 2px;
-    background-color: var(--color-text-light);
+    background-color: var(--color-white);
   }
 
   &::after {

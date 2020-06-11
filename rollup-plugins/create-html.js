@@ -2,6 +2,7 @@ import {promisify} from 'util';
 import {readFileSync} from 'fs';
 import ejs from 'ejs';
 import glob from 'glob'; // Match files using the patterns the shell uses, like stars and stuff
+import data from '../src/data';
 
 function getFileFromBundle(fileName, bundle) {
   const fileKeyWithName = Object.keys(bundle).find((key) => bundle[key].name === fileName)
@@ -19,12 +20,14 @@ export default function createHTMLPlugin() {
       });
 
       this.addWatchFile('src/index.ejs');
+      this.addWatchFile('src/data.js');
     },
     async generateBundle(options, bundle) {
       const template = readFileSync('src/index.ejs', {encoding: 'utf-8'});
       const html = ejs.render(template, {
         mainJS: getFileFromBundle('index', bundle).fileName,
-        mainCSS: bundle['bundle.css'].fileName
+        mainCSS: bundle['bundle.css'].fileName,
+        data: data.pages[0].data
       }, {
         root: 'src/templates/'
       });

@@ -1,0 +1,28 @@
+<section class="section experience-section">
+  <h2 class="section__title"> <%= data.title %> </h2>
+
+  <ul class="section__entries experience-section__entries">
+    <% data.entries.forEach((entry) => { %>
+      <li class="experience-entry">
+        <div class="experience-entry__header">
+          <h3 class="experience-entry__title"> <%= entry.title %> </h3>
+          <span class="experience-entry__location"> <%= entry.location %> </span>
+          <span class="experience-entry__timeframe"> <%= entry.timeframe %> </span>
+        </div>
+
+        <div class="experience-entry__body">
+          <div class="experience-entry__description"> <%= entry.description %> </div>
+
+          <ul class="technology-list">
+            <% entry.technologies.forEach((technology) => { %>
+              <li class="technology-list__item">
+                <%- include(`/svgs/logos/${technology.icon}.svg`); %>
+                <%= technology.label %>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      </li>
+    <% }); %>
+  </ul>
+</section>

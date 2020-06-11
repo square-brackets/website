@@ -3,7 +3,7 @@
   --column-gap: 24px;
   --row-gap: 0;
 
-  @include media(desktop) {
+  @include media(tablet down) {
     --column-width: 56px;
   }
 }
@@ -24,32 +24,38 @@
 %link {
   position: relative;
 
-  &:hover {
+  @include media(desktop up) {
+    &:hover {
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: var(--color-mine);
+    }
+
     &::after {
-      transform: scaleX(1);
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: var(--color-accent);
+      transform: scaleX(0);
+      transition: transform 300ms ease-out;
+      transform-origin: left;
     }
   }
 
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2px;
-    background-color: var(--color-text-light);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2px;
-    background-color: var(--color-accent);
-    transform: scaleX(0);
-    transition: transform 300ms ease-out;
-    transform-origin: left;
+  @include media(tablet down) {
+    text-decoration: underline;
   }
 }

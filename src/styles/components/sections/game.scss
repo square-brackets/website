@@ -1,0 +1,29 @@
+.game {
+  @extend %container;
+  padding: 80px 0;
+
+  @include media(tablet down) {
+    padding: 24px 0;
+  }
+}
+
+.game__trigger {
+  padding: 40px 56px;
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: 1fr max-content;
+  grid-column: 3 / span 8;
+
+  background-color: var(--color-mine);
+  color: var(--color-white);
+
+  font-size: 36px;
+  font-weight: bold;
+
+  @include media(tablet down) {
+    grid-column: 1 / -1;
+    padding: 24px;
+
+    font-size: 24px;
+  }
+}

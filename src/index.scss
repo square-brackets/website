@@ -1,17 +1,12 @@
 :root {
-  --color-base-cod-gray: #141414;
-  --color-base-black: #000000;
-  --color-base-white: #FAFAFA;
-  --color-base-red: #FF4438;
-  --color-base-blue: #004CFF;
-  --color-base-purple: #7000FF;
+  --color-mine: #141414;
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-alabaster: #FAFAFA;
+  --color-red: #FF4438;
+  --color-athens-gray: #F2F0F4;
 
-  --color-background-dark: var(--color-base-cod-gray);
-  --color-background-light: var(--color-base-white);
-  --color-text-dark: var(--color-base-black);
-  --color-text-light: var(--color-base-white);
-
-  --color-accent: var(--color-base-red);
+  --color-accent: var(--color-red);
 }
 
 @import "~media-blender";
@@ -28,8 +23,12 @@ $media-breakpoints: (
 @import "styles/fonts";
 @import "styles/common";
 
+@import "styles/components/sections/about";
 @import "styles/components/sections/education";
+@import "styles/components/sections/experience";
+@import "styles/components/sections/game";
 @import "styles/components/sections/hero";
+@import "styles/components/sections/interests";
 
 @import "styles/components/interactive-logo";
 @import "styles/components/header";

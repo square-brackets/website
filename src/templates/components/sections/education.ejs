@@ -1,31 +1,33 @@
 <section class="section education-section">
-  <h2 class="section__title"> Education </h2>
+  <h2 class="section__title"> <%= data.title %> </h2>
 
-  <ul class="section__entries">
-    <li class="section__entry">
-      <div class="section__entry-header">
-        <h3 class="section__entry-title"> XV. gimnazija </h3>
-        <span class="section__entry-subtitle"> Zagreb, Croatia </span>
-      </div>
-
-      <div class="section__entry-body">
-        <div class="section__entry-description">
-          Competing at <a href="https://www.iypt.org/" target="_blank" rel="noopener"> IYPT </a>
+  <ul class="education-section__entries">
+    <% data.entries.forEach((entry) => { %>
+      <li class="education-entry">
+        <div class="education-entry__header">
+          <h3 class="education-entry__title"> <%= entry.title %> </h3>
+          <span class="education-entry__location"> <%= entry.location %> </span>
         </div>
-      </div>
-    </li>
 
-    <li class="section__entry">
-      <div class="section__entry-header">
-        <h3 class="section__entry-title"> University of Zagreb </h3>
-        <span class="section__entry-subtitle"> Zagreb, Croatia </span>
-      </div>
+        <ul class="education-section__subentries">
+          <% entry.entries.forEach((subentry) => { %>
+            <li class="education-subentry">
+              <div class="education-subentry__title">
+                <span> <%- subentry.title %> </span>
 
-      <div class="section__entry-body">
-        <div class="section__entry-description education-section__university-description">
-          <span class="education-section__university-title"> MSc in Computing @ </span> Faculty of electrical engineering and computing
-        </div>
-      </div>
-    </li>
+                <% if (subentry.description) { %>
+                  <span> <%- subentry.timeframe %> </span>
+                <% } %>
+              </div>
+              <% if (subentry.description) { %>
+                <div class="education-subentry__description">
+                  <%- subentry.description %>
+                </div>
+              <% } %>
+            </li>
+          <% }); %>
+        </ul>
+      </li>
+    <% }); %>
   </ul>
 </section>

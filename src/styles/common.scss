@@ -6,8 +6,8 @@
 }
 
 html {
-  background-color: var(--color-background-dark);
-  color: var(--color-text-light);
+  background-color: var(--color-alabaster);
+  color: var(--color-mine);
 }
 
 body {
@@ -28,7 +28,7 @@ p {
 
 a {
   text-decoration: none;
-  color: var(--color-text-light);
+  color: var(--color-mine);
 
   &:hover {
     text-decoration: none;
@@ -98,4 +98,16 @@ h3 {
 ul {
   list-style: none;
   padding-left: 0;
+}
+
+button {
+  border: 0;
+  background: transparent;
+  -webkit-appearance: button;
+  text-transform: none;
+  font: inherit;
+  line-height: 1.15;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
 }

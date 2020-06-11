@@ -1,0 +1,56 @@
+.experience-section__entries {
+  grid-column: 3 / span 6;
+  margin-top: 40px;
+
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 40px;
+
+  @include media(desktop up) {
+    margin-top: 72px;
+    grid-gap: 72px;
+  }
+}
+
+.experience-entry__header {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  grid-template-areas: "title location timeframe";
+  align-items: baseline;
+  grid-gap: 8px;
+
+  @include media(tablet down) {
+    grid-template-columns: 1fr;
+    grid-template-areas: "title" "location" "timeframe";
+  }
+}
+
+.experience-entry__title {
+  grid-area: title;
+}
+
+.experience-entry__location {
+  grid-area: location;
+}
+
+.experience-entry__timeframe {
+  grid-area: timeframe;
+}
+
+.experience-entry__location,
+.experience-entry__timeframe {
+  @include media(tablet down) {
+    margin-left: 20px;
+    font-size: 16px;
+  }
+}
+
+.experience-entry__body {
+  margin-top: 16px;
+  font-size: 20px;
+  line-height: 1.7;
+
+  @include media(desktop up) {
+    padding-left: calc(var(--column-width) + var(--column-gap));
+  }
+}

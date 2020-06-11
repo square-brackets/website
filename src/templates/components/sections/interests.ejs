@@ -1,0 +1,11 @@
+<section class="section interests-section">
+  <h2 class="section__title"> <%= data.title %> </h2>
+
+  <ul class="interests-section__entries">
+    <% data.entries.forEach((entry) => { %>
+      <li class="interests-entry">
+        <h3 class="interests-entry__title"> <%= entry %> </h3>
+      </li>
+    <% }); %>
+  </ul>
+</section>

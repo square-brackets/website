@@ -1,40 +1,35 @@
 .technology-list {
   display: grid;
-  grid-gap: 32px;
+  grid-gap: 16px;
 
-  margin-top: 32px;
+  margin-top: 24px;
 
   @include media(desktop up) {
-    grid-auto-columns: 128px;
+    grid-auto-columns: 1fr;
     grid-auto-flow: column;
+  }
+
+  @include media(tablet down) {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 .technology-list__item {
-  display: flex;
+  display: grid;
 
   font-size: 20px;
   line-height: 24px;
   font-weight: bold;
+  grid-gap: 16px;
 
-  @include media(desktop up) {
-    flex-direction: column;
-  }
+  padding: 8px;
 
-  @include media(tablet down) {
-    align-items: center;
-  }
+  background-color: var(--color-athens-gray);
 
   & > svg {
     width: 32px;
     height: 32px;
-
-    @include media(desktop up) {
-      margin-bottom: 16px;
-    }
-
-    @include media(tablet down) {
-      margin-right: 16px;
-    }
+    border: 2px solid var(--color-mine);
+    background-color: var(--color-mine);
   }
 }

@@ -1,0 +1,18 @@
+.about-section__content {
+  grid-column: 3 / span 8;
+  margin-top: 40px;
+
+  p:first-child {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  @include media(desktop up) {
+    background-color: var(--color-athens-gray);
+    padding: 24px 40px;
+    margin-top: 72px;
+  }
+}
