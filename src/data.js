@@ -46,11 +46,11 @@ export default {
           entries: [{
             title: 'MSc in Computing',
             timeframe: '2017–2019',
-            description: 'Thesis topic: <a href="https://www.iypt.org/" target="_blank" rel="noopener"> Time entry prediction for a time tracking software </a>'
+            description: 'Thesis topic: <a href="/petrusa_thesis_time_entry_prediction.pdf" target="_blank" rel="noopener"> Time entry prediction for a time tracking software </a>'
           }, {
             title: 'BSc in Computing',
             timeframe: '2014–2017',
-            description: 'Thesis topic: <a href="https://www.iypt.org/" target="_blank" rel="noopener"> React Native application for test quizes </a>'
+            description: 'Thesis topic: <a href="/petrusa_thesis_react_native.pdf" target="_blank" rel="noopener"> React Native application for test quizes </a>'
           }]
         }, {
           title: 'XV. gimnazija',
