@@ -1,14 +1,3 @@
-:root {
-  --color-mine: #141414;
-  --color-black: #000000;
-  --color-white: #FFFFFF;
-  --color-alabaster: #FAFAFA;
-  --color-red: #FF4438;
-  --color-athens-gray: #F2F0F4;
-
-  --color-accent: var(--color-red);
-}
-
 @import "~media-blender";
 
 $media-breakpoints: (
@@ -18,6 +7,7 @@ $media-breakpoints: (
   large: 1500
 );
 
+@import "styles/variables";
 @import "styles/mixins";
 @import "styles/placeholders";
 @import "styles/fonts";
