@@ -1,6 +1,7 @@
 .game {
   @extend %container;
   padding: 80px 0;
+  align-items: center;
 
   @include media(tablet down) {
     padding: 24px 0;
@@ -14,8 +15,8 @@
   grid-template-columns: 1fr max-content;
   grid-column: 3 / span 8;
 
-  background-color: var(--color-mine);
-  color: var(--color-white);
+  background-color: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
 
   font-size: 36px;
   font-weight: bold;

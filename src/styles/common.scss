@@ -6,8 +6,8 @@
 }
 
 html {
-  background-color: var(--color-alabaster);
-  color: var(--color-mine);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 body {
@@ -28,7 +28,7 @@ p {
 
 a {
   text-decoration: none;
-  color: var(--color-mine);
+  color: var(--color-text-primary);
 
   &:hover {
     text-decoration: none;
@@ -102,6 +102,7 @@ ul {
 
 button {
   border: 0;
+  padding: 0;
   background: transparent;
   -webkit-appearance: button;
   text-transform: none;
