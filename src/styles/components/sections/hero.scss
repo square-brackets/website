@@ -1,4 +1,3 @@
-
 .hero {
   --hero-vertical-spacing: 112px;
   --hero-title-line-height: 124px;
@@ -7,14 +6,6 @@
 
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(45deg, var(--color-alabaster) 0% 50%, var(--color-mine) 50% 100%);
-  background-size: calc(200% + var(--hero-title-line-height) + var(--hero-text-spacing) + var(--hero-subtitle-line-height) + 2 * var(--hero-vertical-spacing)) 100%;
-  background-position: left;
-  transition: 500ms background-position ease-out;
-
-  html.is-dark & {
-    background-position: right;
-  }
 }
 
 .hero__content {
@@ -41,7 +32,7 @@
   // background-image: linear-gradient(45deg, rgb(2,0,36) 0%, rgb(0,212,255) 100%);
   background-image: linear-gradient(45deg, var(--color-mine) 0% 50%, var(--color-alabaster) 50% 100%);
   background-size: calc(200% + var(--hero-title-line-height)) 100%;
-  transition: 500ms background-position ease-out 300ms;
+  transition: 500ms background-position ease-out 500ms;
 
   background-clip: text;
   background-position: left;
@@ -62,7 +53,7 @@
 
   background-image: linear-gradient(45deg, var(--color-mine) 0% 50%, var(--color-alabaster) 50% 100%);
   background-size: calc(200% + var(--hero-title-line-height)) 100%;
-  transition: 500ms background-position ease-out 300ms;
+  transition: 500ms background-position ease-out 800ms;
 
   background-clip: text;
   background-position: left;
