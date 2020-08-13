@@ -1,0 +1,38 @@
+:root {
+  // COLORS
+  --color-black: #000000;
+  // --color-mine: #191919;
+  --color-mine: #141414;
+  --color-cod-gray: #222222;
+  --color-white: #FFFFFF;
+  --color-alabaster: #FAFAFA;
+  --color-red: #FF4438;
+  --color-athens-gray: #F2F0F4;
+
+  --color-accent: var(--color-red);
+
+  --color-bg-primary: var(--color-alabaster);
+  --color-bg-secondary: var(--color-athens-gray);
+  --color-bg-inverse: var(--color-mine);
+
+  --color-text-primary: var(--color-mine);
+  --color-text-inverse: var(--color-alabaster);
+
+  &.is-dark {
+    --color-bg-primary: var(--color-mine);
+    --color-bg-secondary: var(--color-cod-gray);
+    --color-bg-inverse: var(--color-alabaster);
+
+    --color-text-primary: var(--color-alabaster);
+    --color-text-inverse: var(--color-mine);
+  }
+
+  // LAYOUT
+  --column-width: 80px;
+  --column-gap: 24px;
+  --row-gap: 0;
+
+  @include media(tablet down) {
+    --column-width: 56px;
+  }
+}

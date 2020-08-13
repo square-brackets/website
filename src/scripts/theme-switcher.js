@@ -8,3 +8,11 @@ logoTriggers.forEach((logoTrigger) => {
     document.documentElement.style.setProperty('--color-accent', colors[activeColorIndex]);
   });
 });
+
+const themeSwitchTrigger = document.querySelector('.js-theme-switch-trigger');
+
+if (themeSwitchTrigger) {
+  themeSwitchTrigger.addEventListener('click', () => {
+    document.documentElement.classList.toggle('is-dark');
+  });
+}

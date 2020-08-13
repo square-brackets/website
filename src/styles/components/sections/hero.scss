@@ -1,4 +1,9 @@
 .hero {
+  --hero-vertical-spacing: 112px;
+  --hero-title-line-height: 124px;
+  --hero-subtitle-line-height: 48px;
+  --hero-text-spacing: 16px;
+
   display: flex;
   justify-content: center;
 }
@@ -6,7 +11,7 @@
 .hero__content {
   max-width: calc(12 * var(--column-width) + 11 * var(--column-gap));
   width: 100%;
-  margin: 112px auto;
+  margin: var(--hero-vertical-spacing) auto;
 
   @include media(tablet down) {
     margin: 40px auto;
@@ -17,18 +22,48 @@
 .hero__title {
   font-size: 104px;
   font-weight: 900;
+  line-height: var(--hero-title-line-height);
   margin: 0;
 
   @include media(tablet down) {
     font-size: 8vw;
   }
+
+  // background-image: linear-gradient(45deg, rgb(2,0,36) 0%, rgb(0,212,255) 100%);
+  background-image: linear-gradient(45deg, var(--color-mine) 0% 50%, var(--color-alabaster) 50% 100%);
+  background-size: calc(200% + var(--hero-title-line-height)) 100%;
+  transition: 500ms background-position ease-out 500ms;
+
+  background-clip: text;
+  background-position: left;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+
+  html.is-dark & {
+    background-position: right;
+  }
 }
 
 .hero__subtitle {
   font-size: 40px;
-  line-height: 48px;
+  line-height: var(--hero-subtitle-line-height);
   font-weight: bold;
-  margin: 16px 0 0;
+  margin: var(--hero-text-spacing) 0 0;
+
+  background-image: linear-gradient(45deg, var(--color-mine) 0% 50%, var(--color-alabaster) 50% 100%);
+  background-size: calc(200% + var(--hero-title-line-height)) 100%;
+  transition: 500ms background-position ease-out 800ms;
+
+  background-clip: text;
+  background-position: left;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+
+  html.is-dark & {
+    background-position: right;
+  }
 
   @include media(tablet down) {
     font-size: 24px;

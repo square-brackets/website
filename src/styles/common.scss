@@ -6,8 +6,8 @@
 }
 
 html {
-  background-color: var(--color-alabaster);
-  color: var(--color-mine);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 body {
@@ -18,6 +18,25 @@ body {
   flex-direction: column;
   font-size: 20px;
   counter-reset: heading2;
+
+  html.is-dark &::before {
+    background-position: top;
+  }
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+
+    background-image: linear-gradient(45deg, var(--color-alabaster) 0% 50%, var(--color-mine) 50% 100%);
+    background-size: 100% calc(200% + 100vw);
+    background-position: bottom;
+    transition: 1000ms background-position ease-out;
+  }
 }
 
 p {
@@ -28,7 +47,7 @@ p {
 
 a {
   text-decoration: none;
-  color: var(--color-mine);
+  color: var(--color-text-primary);
 
   &:hover {
     text-decoration: none;
@@ -102,6 +121,7 @@ ul {
 
 button {
   border: 0;
+  padding: 0;
   background: transparent;
   -webkit-appearance: button;
   text-transform: none;
