@@ -15,7 +15,7 @@
 
   display: grid;
   grid-template-columns: 1fr max-content max-content;
-  grid-gap: 16px;
+  grid-gap: 24px;
   align-items: center;
   justify-items: flex-start;
 }
@@ -26,12 +26,15 @@
   height: 20px;
   border: 2px solid var(--color-mine);
   padding: 0;
-  // background-color: var(--color-bg-primary);
   overflow: hidden;
 
   &:hover {
     &::after {
-      transform: translate(3px, -3px) rotate(45deg);
+      transform: translate(11px, -11px) rotate(45deg);
+
+      html.is-dark & {
+        transform: translate(6px, -6px) rotate(45deg);
+      }
     }
   }
 
@@ -50,6 +53,10 @@
     transform: translate(14px, -14px) rotate(45deg);
     transition: 300ms transform ease-out;
     pointer-events: none;
+
+    html.is-dark & {
+      transform: translate(3px, -3px) rotate(45deg);
+    }
   }
 }
 
