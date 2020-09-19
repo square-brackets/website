@@ -4,50 +4,115 @@ import noise from './noise';
 const NOISE_SCALE_FACTOR = 0.06;
 const NOISE_OFFSET = Math.random() * 10;
 
+const TILES_IN_CHUNK = 8;
+const CHUNK_SIZE = TILE_SIZE * TILES_IN_CHUNK;
+
 export default class TilesContainer {
-  constructor({width, height, offsetX, offsetY, triggerCenterX, triggerCenterY, renderer}) {
-    this.width = width;
-    this.height = height;
-    this.offsetX = offsetX;
-    this.offsetY = offsetY;
-    this.triggerCenterX = triggerCenterX;
-    this.triggerCenterY = triggerCenterY;
-    this.renderer = renderer;
+  constructor({sprite}) {
+    this.sprite = sprite;
+    this.tilesCache = {};
 
-    this.tiles = [];
-    this.initialAnimationDelays = [];
-
-    this.tilesInRow = Math.floor((width + offsetX) / TILE_SIZE) + 2;
-    this.tilesInColumn = Math.floor((height + offsetY) / TILE_SIZE) + 2;
-
-    this.mapOffsetX = 0;
-    this.mapOffsetY = 0;
+    this.chunkCache = {};
   }
 
-  generateTiles() {
-    const {i: triggerI, j: triggerJ} = this.getPositionFromCoordinates(this.triggerCenterX, this.triggerCenterY);
+  getOrCreateChunk(x, y) {
+    const cacheKey = this.getCacheKey(x, y);
+    if (this.chunkCache[cacheKey] === undefined) {
+      const tiles = [];
 
-    for (var i = 0; i < this.tilesInRow; i++) {
-      this.tiles[i] = [];
-      this.initialAnimationDelays[i] = [];
+      for (let i = 0; i <= TILES_IN_CHUNK; i++) {
+        for (let j = 0; j <= TILES_IN_CHUNK; j++) {
+          tiles.push(this.getOrCreateTile({
+            i,
+            j,
+            realI: y * TILES_IN_CHUNK + i,
+            realJ: x * TILES_IN_CHUNK + j
+          }));
+        }
+      }
 
-      for (var j = 0; j < this.tilesInColumn; j++) {
-        const dx = triggerI - i;
-        const dy = triggerJ - j;
-        const distanceToTrigger = Math.sqrt(Math.abs(dx) * Math.abs(dx) + Math.abs(dy) * Math.abs(dy));
-        const delay = distanceToTrigger * 50 + Math.random() * 150;
-        this.initialAnimationDelays[i][j] = delay;
+      this.chunkCache[cacheKey] = {
+        image: new Image(CHUNK_SIZE, CHUNK_SIZE),
+        x,
+        y,
+        tiles,
+      };
 
-        const tile = new Tile({
-          i, j,
-          context: this.context,
-          terrainGradient: this.getNoiseForCoordinates(i, j),
-          tilesContainer: this
-        });
+      const chunkCanvas = new OffscreenCanvas(CHUNK_SIZE, CHUNK_SIZE)
+      const chunkContext = chunkCanvas.getContext('2d');
 
-        this.tiles[i][j] = tile;
+      tiles.forEach((tile, index) => {
+        const tileRow = Math.floor(index / (TILES_IN_CHUNK + 1));
+        const tileColumn = index % (TILES_IN_CHUNK + 1);
+        chunkContext.save();
+        chunkContext.translate(tileColumn * TILE_SIZE, tileRow * TILE_SIZE);
+        tile.render(chunkContext);
+        chunkContext.restore();
+      });
+
+      this.chunkCache[cacheKey].canvas = chunkCanvas;
+    }
+
+    return this.chunkCache[cacheKey];
+  }
+
+  renderChunk(chunk, context) {
+    var renderCoordinate = this.chunkToRenderCoordinates(chunk.x, chunk.y);
+    context.drawImage(chunk.canvas, renderCoordinate.x, renderCoordinate.y);
+  }
+
+  getCacheKey(i, j) {
+    return `${i}:${j}`;
+  }
+
+  getVisibleChunksInRect(x, y, width, height) {
+    const topLeft = this.worldToChunkCoordinates(x, y);
+    const bottomRight = this.worldToChunkCoordinates(x + width, y + height);
+
+    const chunks = [];
+
+    const chunksOnXAxis = bottomRight.x - topLeft.x;
+    const chunksOnYAxis = bottomRight.y - topLeft.y;
+    for (let i = 0; i <= chunksOnXAxis; i++) {
+      for (let j = 0; j <= chunksOnYAxis; j++) {
+        const chunk = this.getOrCreateChunk(topLeft.x + i, topLeft.y + j);
+        chunks.push(chunk);
       }
     }
+
+    return chunks;
+  }
+
+  chunkToRenderCoordinates(x, y) {
+    return {
+      x: x * CHUNK_SIZE,
+      y: y * CHUNK_SIZE
+    };
+  }
+
+  worldToChunkCoordinates(x, y) {
+    return {
+      x: Math.floor(x / CHUNK_SIZE),
+      y: Math.floor(y / CHUNK_SIZE)
+    }
+  }
+
+  getTileCacheKey(i, j) {
+    return this.getCacheKey(i, j)
+  }
+
+  getOrCreateTile({i, j, realI, realJ}) {
+    const cacheKey = this.getTileCacheKey(realI, realJ);
+    if (this.tilesCache[cacheKey] === undefined) {
+      this.tilesCache[cacheKey] = new Tile({
+        i,
+        j,
+        terrainGradient: this.getNoiseForCoordinates(realI, realJ),
+        sprite: this.sprite
+      });
+    }
+
+    return this.tilesCache[cacheKey];
   }
 
   getNoiseForCoordinates(x, y) {
@@ -55,108 +120,5 @@ export default class TilesContainer {
     const terrainGradient = noise(x * NOISE_SCALE_FACTOR + NOISE_OFFSET, y * NOISE_SCALE_FACTOR + NOISE_OFFSET);
     // Normalize values between 0 and 1
     return (terrainGradient + 1) / 2;
-  }
-
-  getPositionFromCoordinates(x, y) {
-    const normalizedX = x + this.offsetX;
-    const normalizedY = y + this.offsetY;
-
-    const i = Math.floor(normalizedX / TILE_SIZE);
-    const j = Math.floor(normalizedY / TILE_SIZE);
-    return {i, j};
-  }
-
-  getTileForCoordinates(x, y) {
-    const {i, j} = this.getPositionFromCoordinates(x, y);
-
-    return this.tiles[i][j];
-  }
-
-  offsetTiles(dx, dy) {
-    this.mapOffsetX += dx;
-    this.mapOffsetY += dy;
-
-    const tilesToUpdateTexture = [];
-
-    if (dx === 1) {
-      const firstColumn = this.tiles.shift();
-      this.tiles.push(firstColumn); // Move first column to the end
-      tilesToUpdateTexture.push(...firstColumn);
-    } else if (dx === -1) {
-      const lastColumn = this.tiles.pop();
-      this.tiles.unshift(lastColumn); // Move last column to the start
-      tilesToUpdateTexture.push(...lastColumn);
-    }
-
-    if (dy === 1) {
-      this.tiles.forEach((tiles) => {
-        const firstTile = tiles.shift();
-        tiles.push(firstTile); // Move first row to the end
-
-        tilesToUpdateTexture.push(firstTile);
-      });
-    } else if (dy === -1) {
-      this.tiles.forEach((tiles) => {
-        const lastTile = tiles.pop();
-        tiles.unshift(lastTile); // Move last row to the start
-
-        tilesToUpdateTexture.push(lastTile);
-      });
-    }
-
-    this.updateTilePositions();
-    this.updateGradientOnTiles(tilesToUpdateTexture);
-  }
-
-  updateGradientOnTiles(tiles) {
-    tiles.forEach((tile) => {
-      tile.terrainGradient = this.getNoiseForCoordinates(tile.i + this.mapOffsetX, tile.j + this.mapOffsetY);
-      tile.updateTerrainColor();
-    });
-  }
-
-  updateTilePositions() {
-    for (var i = 0; i < this.tilesInRow; i++) {
-      for (var j = 0; j < this.tilesInColumn; j++) {
-        this.tiles[i][j].setPosition(i, j);
-      }
-    }
-  }
-
-  animateTiles(context, startTime = Date.now()) {
-    let shouldRedraw = false;
-
-    return this.renderer.schedule((time) => {
-      context.clearRect(0, 0, this.width, this.height);
-
-      this.tiles.forEach((tileColumn, i) => {
-        tileColumn.forEach((tile, j) => {
-          const delay = this.initialAnimationDelays[i][j];
-          const percentage = Math.max(Math.min((time - startTime - delay) / 500, 1), 0);
-          const opacity = percentage * (2 - percentage); // ease-out-quad
-          context.globalAlpha = opacity;
-
-          tile.draw(context);
-
-          shouldRedraw = shouldRedraw || percentage < 1;
-        });
-      });
-
-      context.globalAlpha = 1;
-    }).then(() => {
-      if (shouldRedraw) {
-        return this.animateTiles(context, startTime);
-      }
-    });
-  }
-
-  redrawTiles(context) {
-    this.renderer.schedule(() => {
-      this.tiles.forEach((tileColumn) => {
-        tileColumn.forEach((tile) => {
-          tile.draw(context);
-        });
-      });
-    });
   }
 }
