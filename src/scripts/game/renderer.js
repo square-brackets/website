@@ -6,7 +6,7 @@ export default class Renderer {
   schedule(callback) {
     this.scheduledCallbacks.push(callback);
 
-    // If we added first callback start run loop
+    // If we added first callback, start the run loop
     if (this.scheduledCallbacks.length === 1) {
       return this.loop();
     }
