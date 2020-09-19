@@ -1,46 +1,42 @@
 // Transition functions: https://gist.github.com/gre/1650294
 
-import {TILE_SIZE} from './tile';
-import Player from './player';
+import Map from './map';
 import Renderer from './renderer';
 import TilesContainer from './tiles-container';
+import Camera from './camera';
+import {loadSprite} from './utils/sprite';
 
 export default class Game {
-  constructor(canvas, options = {}) {
+  constructor(canvas) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
 
-    this.originalOffsetX = Math.round(options.offsetX);
-    this.originalOffsetY = Math.round(options.offsetY);
-    this.offsetX = this.originalOffsetX % TILE_SIZE;
-    this.offsetY = this.originalOffsetY % TILE_SIZE;
-
     this.renderer = new Renderer();
 
-    this.tilesContainer = new TilesContainer({
-      width: this.canvas.width,
-      height: this.canvas.height,
-      offsetX: this.offsetX,
-      offsetY: this.offsetY,
-      triggerCenterX: this.originalOffsetX - this.offsetX + TILE_SIZE / 2,
-      triggerCenterY: this.originalOffsetY - this.offsetY + TILE_SIZE / 2,
-      renderer: this.renderer
+    loadSprite().then((sprite) => {
+      this.tilesContainer = new TilesContainer({
+        sprite
+      });
+
+      this.map = new Map({
+        width: this.canvas.width,
+        height: this.canvas.height,
+        tilesContainer: this.tilesContainer
+      });
+
+      this.camera = new Camera();
+
+      this.camera.on('position:changed', ({x, y}) => {
+        this.map.centerX += x;
+        this.map.centerY += y;
+        this.renderer.schedule(() => {
+          this.clearCanvas();
+          this.map.render(this.context);
+        })
+      });
+
+      this.map.render(this.context);
     });
-
-    this.tilesContainer.generateTiles();
-  }
-
-  async start() {
-    await this.tilesContainer.animateTiles(this.context)
-
-    const playerTile = this.tilesContainer.getTileForCoordinates(this.originalOffsetX, this.originalOffsetY);
-
-    this.player = new Player({
-      tile: playerTile
-    });
-
-    this.player.draw(this.context);
-    this.addControls();
   }
 
   clearCanvas() {
@@ -68,7 +64,7 @@ export default class Game {
           nextTilePosition = 'rightTile';
           break;
         default:
-          console.log(`${event.code} is not supported key`);
+          console.info(`${event.code} is not supported key`);
           // ignore other codes
           break;
       }
