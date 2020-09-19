@@ -37,6 +37,10 @@ body {
     background-position: bottom;
     transition: 1000ms background-position ease-out;
   }
+
+  &.is-game-running {
+    overflow: hidden;
+  }
 }
 
 p {

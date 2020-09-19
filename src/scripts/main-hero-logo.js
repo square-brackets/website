@@ -4,29 +4,37 @@ const gameTrigger = document.querySelector('.js-game-trigger');
 
 if (gameTrigger) {
   gameTrigger.addEventListener('click', () => {
-    const gameWrapper = document.querySelector('.js-game-wrapper');
-    const canvas = gameWrapper.querySelector('#game-canvas');
-
-    // On resize update canvas size
-    const gameWrapperSize = gameWrapper.getBoundingClientRect();
-    canvas.width = gameWrapperSize.width;
-    canvas.height = gameWrapperSize.height;
-
     const gameTriggerSize = gameTrigger.getBoundingClientRect();
-    const game = new Game(canvas, {
-      offsetX: gameTriggerSize.x,
-      offsetY: gameTriggerSize.y
-    });
 
-    game.start();
+    const triggerWidth = gameTrigger.offsetWidth;
+    const triggerHeight = gameTrigger.offsetHeight;
 
-    window.game = game;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
 
-    const heroContentElement = document.querySelector('.js-main-hero-section-content');
-    heroContentElement.addEventListener('transitionend', () => {
-      heroContentElement.remove();
+    const horizontalScaling = windowWidth / triggerWidth;
+    const verticalScaling = windowHeight / triggerHeight;
+    const verticalTranslation = windowHeight / 2 - (gameTriggerSize.top + triggerHeight / 2);
+
+    gameTrigger.style.setProperty('--horizontal-scaling', horizontalScaling);
+    gameTrigger.style.setProperty('--vertical-scaling', verticalScaling);
+    gameTrigger.style.setProperty('--vertical-translation', `${verticalTranslation / verticalScaling}px`);
+
+    document.body.classList.add('is-game-running');
+
+    gameTrigger.addEventListener('animationend', () => {
+      const canvas = document.querySelector('.js-game-canvas');
+
+      canvas.width = windowWidth;
+      canvas.height = windowHeight;
+
+      canvas.classList.add('is-visible');
+
+      const game = new Game(canvas);
+
+      game.start();
+
+      window.game = game;
     }, {once: true});
-
-    heroContentElement.classList.add('is-hidden');
   }, {once: true});
 }

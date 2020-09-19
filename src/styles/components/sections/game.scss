@@ -15,16 +15,69 @@
   grid-template-columns: 1fr max-content;
   grid-column: 3 / span 8;
 
+  position: relative;
+
   background-color: var(--color-bg-inverse);
   color: var(--color-text-inverse);
 
   font-size: 36px;
   font-weight: bold;
 
+  @keyframes gameTriggerOpening {
+    0% {
+      transform: scale(1, 1);
+    }
+
+    50% {
+      transform: scale(var(--horizontal-scaling), 1);
+    }
+
+    100% {
+      transform: scale(var(--horizontal-scaling), var(--vertical-scaling)) translateY(var(--vertical-translation));
+    }
+  }
+
   @include media(tablet down) {
     grid-column: 1 / -1;
     padding: 24px;
 
     font-size: 24px;
+  }
+
+  body.is-game-running & {
+    &::before {
+      animation-play-state: running;
+    }
+  }
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: var(--color-bg-inverse);
+
+    animation-name: gameTriggerOpening;
+    animation-duration: 600ms;
+    animation-timing-function: ease-out;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+  }
+}
+
+.game__canvas {
+  display: none;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  &.is-visible {
+    display: initial;
   }
 }
