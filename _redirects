@@ -1,0 +1,6 @@
+https://stjepan-petrusa.from.hr/* https://www.brackets.hr/:splat 301!
+
+# Repo furniture, not site content. Netlify publishes the repo root, so these
+# would otherwise be fetchable.
+/tools/*        /404.html  404
+/*/SOURCE       /404.html  404

@@ -1,0 +1,9 @@
+# No build step. The repo root IS the site — Netlify publishes it as-is.
+# Netlify consumes _headers and _redirects rather than serving them.
+#
+# `command` is set explicitly (not omitted) so it overrides any stale build
+# command left in the Netlify UI — otherwise the deploy would try `npm run
+# build` and fail, since there is no package.json any more.
+[build]
+  publish = "."
+  command = "echo 'static site — nothing to build'"
