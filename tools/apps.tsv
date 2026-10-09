@@ -1,0 +1,13 @@
+# Applications built in their own repositories and published through this one.
+#
+# One row per app. Fields are separated by "|" and trimmed.
+#
+#   slug     | source repo     | build command   | artifact (relative to repo)
+#
+# slug     directory it is published to, i.e. brackets.hr/<slug>/
+# artifact either a single file (copied to <slug>/index.html) or a directory
+#          (copied to <slug>/ wholesale)
+#
+# Add an app by adding a line. Then: tools/sync-apps.sh
+
+cutlist | ~/dev/opticut | ./build-web.sh | web/index.html

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Not found — Stjepan Petrusa</title>
+    <meta name="robots" content="noindex" />
+
+    <meta name="theme-color" content="#F2EFE9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0C0C0C" media="(prefers-color-scheme: dark)" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/style.css" />
+
+    <script>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {
+        /* private mode, blocked storage — fall through to prefers-color-scheme */
+      }
+    </script>
+  </head>
+
+  <body>
+    <header class="bar">
+      <a class="bar__mark" href="/" aria-label="Brackets — home">
+        <span class="bar__br" aria-hidden="true">[</span>Brackets<span class="bar__br" aria-hidden="true">]</span>
+      </a>
+      <div class="bar__right">
+        <a class="bar__contact" href="/">Home</a>
+      </div>
+    </header>
+
+    <main class="hero" id="main">
+      <p class="hero__kicker"><span>Error 404</span></p>
+
+      <h1 class="hero__name">
+        <span class="hero__line">Not</span>
+        <span class="hero__line">Found</span>
+      </h1>
+
+      <p class="hero__sub">
+        That page isn't here. It may have moved, or it may never have existed —
+        <a class="pill" href="/">start from the top</a>.
+      </p>
+    </main>
+  </body>
+</html>
